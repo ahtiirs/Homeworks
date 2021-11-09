@@ -1,0 +1,340 @@
+
+import express, { Request, Response, Application } from 'express';
+import cors from 'cors';
+const app: Application = express();
+
+app.use(express.json());
+app.use(cors());
+
+const port = 3010;
+
+const responseCodes = {
+  ok: 200,
+  created: 201,
+  noContent: 204,
+  badRequest: 400,
+  notFound: 404,
+};
+
+/**
+* user interface
+*/
+interface service {
+  id: number;
+  serviceName: string;
+}
+
+/**
+* customer interface
+*/
+interface customer {
+  id: number;
+  firstName: string;
+  lastName: string;
+  phone: string;
+}
+
+/**
+* resource interface
+*/
+interface resource {
+  id: number;
+  service: number;
+  date: string;
+  start_time: string;
+  end_time: string;
+  customer: number;
+}
+
+/**
+* Database interface
+*/
+interface Db {
+  services: service[];
+  customers: customer[];
+  resources: resource[];
+}
+
+/**
+* Mock database
+*/
+const db: Db = {
+  services: [
+    {
+      id: 1,
+      serviceName: 'Klassikaline massaaž',
+    },
+    {
+      id: 2,
+      serviceName: 'Kombineeritud massaaž ',
+    },
+    {
+      id: 2,
+      serviceName: 'Spordimassaaž ',
+    },
+  ],
+  customers: [
+    {
+      id: 1,
+      firstName: 'Kati',
+      lastName: 'Kaalikas',
+      phone: '+372132223',
+    },
+    {
+    id: 2,
+    firstName: 'Mati',
+    lastName: 'Muulukas',
+    phone: '+3725846223',
+    },
+  ],
+  resources: [
+    {
+      id: 1,
+      service: 1,
+      date: '29.09.2021',
+      start_time: '10:00',
+      end_time: '11:00',
+      customer: 1,
+    },
+  ],
+};
+
+
+/**
+* API test endpoint
+*/
+app.get('/ping', (req: Request, res: Response) => {
+  res.status(responseCodes.ok).json({
+    message: 'Alive',
+  });
+});
+
+/**
+* *********************** Customers ******************
+* Get all customers
+*/
+app.get('/customers', (req: Request, res: Response) => {
+  const { customers } = db;
+  return res.status(responseCodes.ok).json({
+    customers,
+  });
+});
+
+
+
+
+ /**
+  * Get user by id
+  */
+  app.get('/customers/:id', (req: Request, res: Response) => {
+    const id: number = parseInt(req.params.id, 10);
+    if (!id) {
+      return res.status(responseCodes.badRequest).json({
+        error: 'No valid id provided',
+      });
+    }
+    const user = db.customers.find((element) => element.id === id);
+    if (!user) {
+      return res.status(responseCodes.badRequest).json({
+        error: `No user found with id: ${id}`,
+      });
+    }
+    return res.status(responseCodes.ok).json({
+      user,
+    });
+  });
+
+  app.delete('/customers/:id', (req: Request, res: Response) => {
+    const id: number = parseInt(req.params.id, 10);
+    if (!id) {
+      return res.status(responseCodes.badRequest).json({
+        error: 'No valid id provided',
+      });
+    }
+    const index = db.customers.findIndex((element) => element.id === id);
+    if (index < 0) {
+      return res.status(responseCodes.badRequest).json({
+        message: `Customer not found with id: ${id}`,
+      });
+    }
+    db.customers.splice(index, 1);
+    return res.status(responseCodes.noContent).json({});
+  });
+
+  app.post('/customers', (req: Request, res: Response) => {
+    const { firstName, lastName, phone } = req.body;
+    if (!firstName) {
+      return res.status(responseCodes.badRequest).json({
+        error: 'First name is required',
+      });
+    }
+    if (!lastName) {
+      return res.status(responseCodes.badRequest).json({
+        error: 'Last name is required',
+      });
+    }
+    if (!phone) {
+      return res.status(responseCodes.badRequest).json({
+        error: 'Phone number is required',
+      });
+    }
+    const id = db.customers.length + 1;
+    db.customers.push({
+      id,
+      firstName,
+      lastName,
+      phone,
+    });
+    return res.status(responseCodes.created).json({
+      id,
+    });
+  });
+
+ /**
+  * Update  /**
+  * Update customer
+  */
+ app.patch('/customers/:id', (req: Request, res: Response) => {
+   const id: number = parseInt(req.params.id, 10);
+   const { firstName, lastName, phone } = req.body;
+   if (!id) {
+     return res.status(responseCodes.badRequest).json({
+       error: 'No valid id provided',
+     });
+   }
+   if (!firstName && !lastName && !phone) {
+     return res.status(responseCodes.badRequest).json({
+       error: 'Nothing to update',
+     });
+   }
+   const index = db.customers.findIndex((element) => element.id === id);
+   if (index < 0) {
+     return res.status(responseCodes.badRequest).json({
+       error: `No customer found with id: ${id}`,
+     });
+   }
+   if (firstName) {
+     db.customers[index].firstName = firstName;
+   }
+   if (lastName) {
+     db.customers[index].lastName = lastName;
+   }
+   if (phone) {
+    db.customers[index].phone = phone;
+  }
+   return res.status(responseCodes.noContent).json({});
+ });
+ 
+/** --------------------------------------------------------------------------------------- */
+
+/**
+* *********************** Services ******************
+* Get all services
+*/
+app.get('/services', (req: Request, res: Response) => {
+  const { services } = db;
+  return res.status(responseCodes.ok).json({
+    services,
+  });
+});
+
+
+
+
+ /**
+  * Get service by id
+  */
+  app.get('/services/:id', (req: Request, res: Response) => {
+    const id: number = parseInt(req.params.id, 10);
+    if (!id) {
+      return res.status(responseCodes.badRequest).json({
+        error: 'No valid id provided',
+      });
+    }
+    const service = db.services.find((element) => element.id === id);
+    if (!service) {
+      return res.status(responseCodes.badRequest).json({
+        error: `No service found with id: ${id}`,
+      });
+    }
+    return res.status(responseCodes.ok).json({
+      service,
+    });
+  });
+
+  app.delete('/services/:id', (req: Request, res: Response) => {
+    const id: number = parseInt(req.params.id, 10);
+    if (!id) {
+      return res.status(responseCodes.badRequest).json({
+        error: 'No valid id provided',
+      });
+    }
+    const index = db.services.findIndex((element) => element.id === id);
+    if (index < 0) {
+      return res.status(responseCodes.badRequest).json({
+        message: `Service not found with id: ${id}`,
+      });
+    }
+    db.services.splice(index, 1);
+    return res.status(responseCodes.noContent).json({});
+  });
+
+  app.post('/services', (req: Request, res: Response) => {
+    const { serviceName } = req.body;
+    if (!serviceName) {
+      return res.status(responseCodes.badRequest).json({
+        error: 'Service name is required',
+      });
+    }
+    
+    const id = db.services.length + 1;
+    db.services.push({
+      id,
+      serviceName
+    });
+    return res.status(responseCodes.created).json({
+      id,
+    });
+  });
+
+ /**
+  * Update  /**
+  * Update service
+  */
+ app.patch('/services/:id', (req: Request, res: Response) => {
+   const id: number = parseInt(req.params.id, 10);
+   const { serviceName } = req.body;
+   if (!id) {
+     return res.status(responseCodes.badRequest).json({
+       error: 'No valid id provided',
+     });
+   }
+   if (!serviceName) {
+     return res.status(responseCodes.badRequest).json({
+       error: 'Nothing to update',
+     });
+   }
+   const index = db.services.findIndex((element) => element.id === id);
+   if (index < 0) {
+     return res.status(responseCodes.badRequest).json({
+       error: `No service found with id: ${id}`,
+     });
+   }
+   if (serviceName) {
+     db.services[index].serviceName = serviceName;
+   }
+   return res.status(responseCodes.noContent).json({});
+ });
+ 
+
+
+
+
+
+/**
+* Start listening
+*/
+app.listen(port, () => {
+  // eslint-disable-next-line no-console
+  console.log(`Server is running on port: ${port}`);
+});

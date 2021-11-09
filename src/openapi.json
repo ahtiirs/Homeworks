@@ -1,0 +1,98 @@
+{
+    "openapi":"3.0.2",
+    "info": {
+        "title":"Homeworks API",
+        "version":"1.0"
+    },
+    "servers": [
+        {"url":"https://localhost:3000"}],
+    "paths": {
+        "/courses": {
+            "get": {
+                "description": "Gets the courses list",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "List of courses",
+                        "content": {
+                            "Application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "coursesList":{
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "example": "2"
+                                                    },
+                                                    "Name": {
+                                                        "type": "string",
+                                                        "example": "Programmeerimine II (HKI5003.HK) "
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+        }
+    },
+    "paths": {
+        "/courses/{id}": {
+            "parameters": [
+                {
+                  "name": "id",
+                  "in": "path",
+                  "required": true,
+                  "description": "CourseId",
+                  "schema": {
+                    "type": "number"
+                  }
+                }
+              ],
+            "get": {
+                "description": "Gets the courses by id",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "Course",
+                        "content": {
+                            "Application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "coursesList":{
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "example": "2"
+                                                    },
+                                                    "Name": {
+                                                        "type": "string",
+                                                        "example": "Programmeerimine II (HKI5003.HK) "
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+        }
+    }
+}

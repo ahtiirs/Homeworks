@@ -1,0 +1,6 @@
+Programmeerimine II
+
+Esimene kodutöö 
+
+Kodutööst loengus jäi mulje, et võib teha ka miski oma projekti mida arendada. Tekkis kaks mõtet, proovisin mõlemat siia üles panin kooliga seonduva mõtte. Api ülesanneteks on kodutöödeks antud ülesannete admebaasi haldamine. Probleeme api enda kirjutamisel erilisi polnud, veidi mõtlemist oli et mis tabelid ja mis väljad milliste andmetüüpidega peaks olema. Edasine oli suures osas loengus tehtu eeskujul koodi kirjutamine. 
+
