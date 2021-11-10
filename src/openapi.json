@@ -41,11 +41,60 @@
                         }
                     }
                 }
+            },
+            "post": {
+                    "description": "Add new course",
+                    "requestBody": {
+                            "content": {
+                              "application/json": {
+                                "schema": {
+                                  "type": "object",
+                                  "properties": {
+                                    "name":  {
+                                        "type": "string",
+                                        "example": "Kursusenimetus"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                        "responses": {
+                            "200": {
+                              "description": "User created and Id is",
+                              "content": {
+                                "application/json": {
+                                  "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                      "id": {
+                                        "type": "number",
+                                        "example": "5"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },                            
+                            "400": {
+                        "description": "Required data is missing",
+                        "content": {
+                        "application/json": {
+                            "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "string",
+                                    "example": "Course name is required"
+                                    }
+                                }
+                        }
+                    }
+                }
             }
-            
-        }
-    },
-    "paths": {
+            }
+          }
+        },
         "/courses/{id}": {
             "parameters": [
                 {
@@ -69,9 +118,7 @@
                                 "schema": {
                                     "type": "object",
                                     "properties": {
-                                        "coursesList":{
-                                            "type": "array",
-                                            "items": {
+                                        "course":{
                                                 "type": "object",
                                                 "properties": {
                                                     "id": {
@@ -84,7 +131,38 @@
                                                     }
                                                 }
                                             }
-                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            
+            "delete": {
+                "description": "Delete course by id",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "Course delete",
+                        "content": {
+                            "Application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "course":{
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "example": "2"
+                                                    },
+                                                    "Name": {
+                                                        "type": "string",
+                                                        "example": "Programmeerimine II (HKI5003.HK) "
+                                                    }
+                                                }
+                                            }
                                     }
                                 }
                             }
@@ -92,7 +170,6 @@
                     }
                 }
             }
-            
-        }
+       }
     }
 }
