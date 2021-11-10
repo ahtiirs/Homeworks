@@ -22,7 +22,7 @@ const teachersService = {
       const teacher = db.teachers.find((element) => element.id === id);
       if (!teacher) {
         return res.status(responseCodes.badRequest).json({
-          error: `No user found with id: ${id}`,
+          error: `No teacher found with id: ${id}`,
         });
       }
       return res.status(responseCodes.ok).json({
@@ -40,7 +40,7 @@ const teachersService = {
       const index = db.teachers.findIndex((element) => element.id === id);
       if (index < 0) {
         return res.status(responseCodes.badRequest).json({
-          message: `Course not found with id: ${id}`,
+          message: `Teacher not found with id: ${id}`,
         });
       }
       db.teachers.splice(index, 1);
@@ -51,7 +51,7 @@ const teachersService = {
       const { Name } = req.body;
       if (!Name) {
         return res.status(responseCodes.badRequest).json({
-          error: 'Course name is required',
+          error: 'Teacher name is required',
         });
       }
       const id = db.teachers.length + 1;

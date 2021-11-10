@@ -50,7 +50,7 @@
                                 "schema": {
                                   "type": "object",
                                   "properties": {
-                                    "name":  {
+                                    "Name":  {
                                         "type": "string",
                                         "example": "Kursusenimetus"
                                     }
@@ -85,13 +85,13 @@
                             "properties": {
                                 "error": {
                                     "type": "string",
-                                    "example": "Course name is required"
+                                    "example": "Course Name is required"
                                     }
                                 }
+                            }
                         }
                     }
                 }
-            }
             }
           }
         },
@@ -135,6 +135,27 @@
                                 }
                             }
                         }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "Application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "course":{
+                                                "type": "object",
+                                                "properties": {
+                                                    "error": {
+                                                        "type": "string",
+                                                        "example": "No group found with id: 80"
+                                                    }
+                                                }
+                                            }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -143,14 +164,206 @@
                 "description": "Delete course by id",
                 "parameters": [],
                 "responses": {
-                    "200": {
+                    "204": {
                         "description": "Course delete",
                         "content": {
                             "Application/json": {
                                 "schema": {
                                     "type": "object",
                                     "properties": {
-                                        "course":{
+
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },  
+        "/teachers": {
+            "get": {
+                "description": "Gets the teachesr list",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "List of teachers",
+                        "content": {
+                            "Application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "teachers":{
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "teachers": {
+                                                        "type": "string",
+                                                        "example": "2"
+                                                    },
+                                                    "Name": {
+                                                        "type": "string",
+                                                        "example": "Martti Raavel"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                    "description": "Add new teacher",
+                    "requestBody": {
+                            "content": {
+                              "application/json": {
+                                "schema": {
+                                  "type": "object",
+                                  "properties": {
+                                    "name":  {
+                                        "type": "string",
+                                        "example": "Õppejõu nimetus"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                        "responses": {
+                            "200": {
+                              "description": "Teacher created and Id is",
+                              "content": {
+                                "application/json": {
+                                  "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                      "id": {
+                                        "type": "number",
+                                        "example": "5"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },                            
+                            "400": {
+                        "description": "Required data is missing",
+                        "content": {
+                        "application/json": {
+                            "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "string",
+                                    "example": "Teacher name is required"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+          }
+        },
+        "/teachers/{id}": {
+            "parameters": [
+                {
+                  "name": "id",
+                  "in": "path",
+                  "required": true,
+                  "description": "TeacherId",
+                  "schema": {
+                    "type": "number"
+                  }
+                }
+              ],
+            "get": {
+                "description": "Gets the teacher by id",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "Teacher",
+                        "content": {
+                            "Application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "teacher":{
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "example": "2"
+                                                    },
+                                                    "Name": {
+                                                        "type": "string",
+                                                        "example": "Martti Raavel "
+                                                    }
+                                                }
+                                            }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            
+            "delete": {
+                "description": "Delete teacher by id",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": "teacher delete",
+                        "content": {
+                            "Application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Teacher not found with id: 80"
+                                        }
+
+                                    }
+                                }
+                            }
+                        }
+                    },"400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "Application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        
+
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/homeworks": {
+            "get": {
+                "description": "Gets the homeworks list",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "List of homeworks",
+                        "content": {
+                            "Application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "coursesList":{
+                                            "type": "array",
+                                            "items": {
                                                 "type": "object",
                                                 "properties": {
                                                     "id": {
@@ -163,6 +376,70 @@
                                                     }
                                                 }
                                             }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                    "description": "Add new homework",
+                    "requestBody": {
+                            "content": {
+                            "application/json": {
+                                "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "group":  {
+                                        "type": "number",
+                                        "example": 3
+                                    },
+                                    "teacher":  {
+                                        "type": "number",
+                                        "example": 2
+                                    },
+                                    "Name":  {
+                                        "type": "string",
+                                        "example": "Kodutöö kirjeldus"
+                                    },
+                                    "dueDate":  {
+                                        "type": "string",
+                                        "example": "10.11.2021"
+                                    }
+                                }
+                                }
+                            }
+                            }
+                        },
+                        "responses": {
+                            "200": {
+                            "description": "Homework created created and Id is",
+                            "content": {
+                                "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                    "id": {
+                                        "type": "number",
+                                        "example": "5"
+                                    }
+                                    }
+                                }
+                                }
+                            }
+                            },                            
+                            "400": {
+                        "description": "Required data is missing",
+                        "content": {
+                        "application/json": {
+                            "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "string",
+                                    "example": "Homework group, teacher, name and dueDate is required"
                                     }
                                 }
                             }
@@ -170,6 +447,235 @@
                     }
                 }
             }
-       }
+        }
+        },
+        "/homeworks/{id}": {
+            "parameters": [
+                {
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "description": "HomeworkId",
+                "schema": {
+                    "type": "number"
+                }
+                }
+            ],
+            "get": {
+                "description": "Gets the homework by id",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "Homework",
+                        "content": {
+                            "Application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "course":{
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "example": "2"
+                                                    },
+                                                    "group":  {
+                                                        "type": "number",
+                                                        "example": 3
+                                                    },
+                                                    "teacher":  {
+                                                        "type": "number",
+                                                        "example": 2
+                                                    },
+                                                    "Name":  {
+                                                        "type": "string",
+                                                        "example": "Kodutöö kirjeldus"
+                                                    },
+                                                    "dueDate":  {
+                                                        "type": "string",
+                                                        "example": "10.11.2021"
+                                                    }
+                                                }
+                                            }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            
+            "delete": {
+                "description": "Delete homework by id",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": "Homework delete",
+                        "content": {
+                            "Application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+    } ,
+    "/groups": {
+        "get": {
+            "description": "Gets the groupsrs list",
+            "parameters": [],
+            "responses": {
+                "200": {
+                    "description": "List of croups",
+                    "content": {
+                        "Application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "coursesList":{
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string",
+                                                    "example": "2"
+                                                },
+                                                "Name": {
+                                                    "type": "string",
+                                                    "example": "RIF20 "
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "post": {
+                "description": "Add new group",
+                "requestBody": {
+                        "content": {
+                        "application/json": {
+                            "schema": {
+                            "type": "object",
+                            "properties": {
+                                "name":  {
+                                    "type": "string",
+                                    "example": "Grupi nimetus"
+                                }
+                            }
+                            }
+                        }
+                        }
+                    },
+                    "responses": {
+                        "200": {
+                        "description": "Group created and Id is",
+                        "content": {
+                            "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                "id": {
+                                    "type": "number",
+                                    "example": "5"
+                                }
+                                }
+                            }
+                            }
+                        }
+                        },                            
+                        "400": {
+                    "description": "Required data is missing",
+                    "content": {
+                    "application/json": {
+                        "schema": {
+                        "type": "object",
+                        "properties": {
+                            "error": {
+                                "type": "string",
+                                "example": "Group name is required"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    },
+    "/groups/{id}": {
+        "parameters": [
+            {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "GroupId",
+            "schema": {
+                "type": "number"
+            }
+            }
+        ],
+        "get": {
+            "description": "Gets the group by id",
+            "parameters": [],
+            "responses": {
+                "200": {
+                    "description": "Group",
+                    "content": {
+                        "Application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "group":{
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string",
+                                                    "example": "2"
+                                                },
+                                                "Name": {
+                                                    "type": "string",
+                                                    "example": "RIF20 "
+                                                }
+                                            }
+                                        }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        
+        "delete": {
+            "description": "Delete course by id",
+            "parameters": [],
+            "responses": {
+                "204": {
+                    "description": "Course delete",
+                    "content": {
+                        "Application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+} 
     }
 }
