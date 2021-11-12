@@ -1,13 +1,13 @@
 import {Request, Response} from 'express';
 import responseCodes from '../general/responseCodes'
-import db from './../../db';
+// import db from './../../db';
 import coursesService from './service';
 const coursesController = {
 
 getAll: (req: Request, res: Response) => {
-  const coursesList = coursesService.getAll();  
+  const data = coursesService.getAll();  
   return res.status(responseCodes.ok).json({
-  coursesList,
+  data,
     });
   },
   
