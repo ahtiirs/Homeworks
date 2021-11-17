@@ -24,11 +24,9 @@ const port = 3000;
 /**
  * *********************** Login ******************
  */
-//  app.post('/login', authController.login);
 
 app.use('/login', loginRouter);
-
-app.use(myCookie);
+app.use(myCookie); //Middleware for 
 app.use('/ping', pingRouter);
 app.use('/groups', groupsRouter);
 app.use('/courses', coursesRouter);
@@ -36,19 +34,8 @@ app.use('/homeworks', homeworksRouter);
 app.use('/teachers', teachersRouter);
 app.use('/users', usersRouter);
 
-// /**
-//  * *********************** Users ******************
-//  */
-//  app.get('/users', usersController.getAllUsers);
-//  app.get('/users/:id', usersController.getUserById);
-//  app.delete('/users/:id', usersController.removeUser);
-//  app.post('/users', usersController.createUser);
-//  app.patch('/users/:id', usersController.updateUser);
+// Start listening
 
-/**
-* Start listening
-*/
 app.listen(port, () => {
-  // eslint-disable-next-line no-console
   console.log(`Server is running on port: ${port}`);
 });
