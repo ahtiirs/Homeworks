@@ -4,13 +4,13 @@ import usersService from './service';
 import { UpdateUser, NewUser } from './interfaces';
 
 const usersController = {
-  getAllUsers: (req: Request, res: Response) => {
+  getAll: (req: Request, res: Response) => {
     const users = usersService.getAllUsers();
     return res.status(responseCodes.ok).json({
       users,
     });
   },
-  getUserById: (req: Request, res: Response) => {
+  getById: (req: Request, res: Response) => {
     const id: number = parseInt(req.params.id, 10);
     if (!id) {
       return res.status(responseCodes.badRequest).json({
@@ -27,7 +27,7 @@ const usersController = {
       user,
     });
   },
-  removeUser: (req: Request, res: Response) => {
+  deleteById: (req: Request, res: Response) => {
     const id: number = parseInt(req.params.id, 10);
     if (!id) {
       return res.status(responseCodes.badRequest).json({
@@ -43,7 +43,7 @@ const usersController = {
     usersService.removeUser(id);
     return res.status(responseCodes.noContent).json({});
   },
-  createUser: (req: Request, res: Response) => {
+  add: (req: Request, res: Response) => {
     const {
       firstName, lastName, password, email,
     } = req.body;
@@ -79,7 +79,7 @@ const usersController = {
       id,
     });
   },
-  updateUser: (req: Request, res: Response) => {
+  updateById: (req: Request, res: Response) => {
     const id: number = parseInt(req.params.id, 10);
     const { firstName, lastName } = req.body;
     if (!id) {

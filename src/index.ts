@@ -6,10 +6,10 @@ import coursesRouter from './components/courses/routes';
 import homeworksRouter from './components/homeworks/routes';
 import teachersRouter from './components/teachers/routes';
 import pingRouter from './components/ping/routes';
-import usersController from './components/users/controller';
-import authController from './components/auth/controller';
-
+import loginRouter from './components/auth/routes';
+import usersRouter from './components/users/routes';
 import myCookie from './cookies'
+
 const cookieParser = require('cookie-parser');
 const app: Application = express();
 
@@ -24,9 +24,9 @@ const port = 3000;
 /**
  * *********************** Login ******************
  */
- app.post('/login', authController.login);
+//  app.post('/login', authController.login);
 
- 
+app.use('/login', loginRouter);
 
 app.use(myCookie);
 app.use('/ping', pingRouter);
@@ -34,15 +34,16 @@ app.use('/groups', groupsRouter);
 app.use('/courses', coursesRouter);
 app.use('/homeworks', homeworksRouter);
 app.use('/teachers', teachersRouter);
+app.use('/users', usersRouter);
 
-/**
- * *********************** Users ******************
- */
- app.get('/users', usersController.getAllUsers);
- app.get('/users/:id', usersController.getUserById);
- app.delete('/users/:id', usersController.removeUser);
- app.post('/users', usersController.createUser);
- app.patch('/users/:id', usersController.updateUser);
+// /**
+//  * *********************** Users ******************
+//  */
+//  app.get('/users', usersController.getAllUsers);
+//  app.get('/users/:id', usersController.getUserById);
+//  app.delete('/users/:id', usersController.removeUser);
+//  app.post('/users', usersController.createUser);
+//  app.patch('/users/:id', usersController.updateUser);
 
 /**
 * Start listening
