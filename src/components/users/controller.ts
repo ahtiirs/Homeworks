@@ -5,10 +5,27 @@ import { UpdateUser, NewUser } from './interfaces';
 
 const usersController = {
   getAll: (req: Request, res: Response) => {
-    const users = usersService.getAllUsers();
-    return res.status(responseCodes.ok).json({
-      users,
+    const { role, id } = res.locals.user;
+    
+    if (role === 'Admin') {
+      
+      const users = usersService.getAllUsers();
+            return res.status(responseCodes.ok).json({
+        users,}
+      );
+    }
+
+    if (role === 'User') {
+
+      const user = usersService.getUserById(id);
+      return res.status(responseCodes.ok).json({
+        user,
+      });
+    }
+    return res.status(responseCodes.badRequest).json({
+      error: 'No valid user rights',
     });
+
   },
   getById: (req: Request, res: Response) => {
     const id: number = parseInt(req.params.id, 10);

@@ -9,6 +9,7 @@ import pingRouter from './components/ping/routes';
 import loginRouter from './components/auth/routes';
 import usersRouter from './components/users/routes';
 import myCookie from './cookies'
+import isLoggedIn from './components/general/middlewares/isLoggedIn';
 
 const cookieParser = require('cookie-parser');
 const app: Application = express();
@@ -26,6 +27,7 @@ const port = 3000;
  */
 
 app.use('/login', loginRouter);
+app.use(isLoggedIn);
 app.use(myCookie); //Middleware for 
 app.use('/ping', pingRouter);
 app.use('/groups', groupsRouter);

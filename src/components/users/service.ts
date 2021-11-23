@@ -2,10 +2,12 @@ import db from '../../db';
 import { User, UpdateUser, NewUser } from './interfaces';
 import hashService from '../general/services/hashService';
 
+
 const usersService = {
-  getAllUsers: (): User[] => {
-    const { users } = db;
-    return users;
+
+  getAllUsers: (): User[] | undefined => {
+      const { users } = db;
+      return users; 
   },
   /**
    * Returns user or undefined
@@ -15,7 +17,8 @@ const usersService = {
     return user;
   },
   getUserByEmail: (email: string): User | undefined => {
-    const user = db.users.find((element) => element.email === email);
+    console.log(email, db.users);
+    const user = db.users.find((element) => element.email == email);
     console.log(user);
     return user;
   },

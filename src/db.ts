@@ -33,9 +33,17 @@ const db: Db = {
       firstName: 'Mari',
       lastName: 'Maasikas',
       email: 'mari@maasikas.ee',
-      password: '$2b$10$FY6sDSftFysyuOVqIpgc..qr./DoTxFCUUZALvqXUF98nz8/wlNeO',
+      password: '$2b$10$nevnzRS0jBjFh.KEYSoQ6u75M7FdLA7vXEgbbV9iHfU7W/.6W9hFa',
       role: 'User',
     },
+    {
+      id: 3,
+      firstName: 'Ahti',
+      lastName: 'Irs',
+      email: 'ahti@hts.ee',
+      password: '$2b$10$MI/Fs2Ptku0WzqF2iuyjMuVdEY2THM/dW0CasUl/KqfMgTVQCJ9YW',
+      role: 'Admin',
+    }
   ],
   groups: [
       {
