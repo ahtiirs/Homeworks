@@ -1,6 +1,11 @@
+// import { getConnection } from 'typeorm';
+
 import db from '../../db';
 import { User, UpdateUser, NewUser } from './interfaces';
 import hashService from '../general/services/hashService';
+import hwUser from './entity';
+
+const connection = getConnection();
 
 
 const usersService = {
@@ -28,14 +33,22 @@ const usersService = {
     return true;
   },
   createUser: async (newUser: NewUser) => {
-    const id = db.users.length + 1;
+    // const id = db.users.length + 1;
+    // const hashedPassword = await hashService.hash(newUser.password);
+    // db.users.push({
+    //   id,
+    //   ...newUser,
+    //   password: hashedPassword,
+    // });
+    // return id;
     const hashedPassword = await hashService.hash(newUser.password);
-    db.users.push({
-      id,
+    const user = {
       ...newUser,
       password: hashedPassword,
-    });
-    return id;
+    };
+    // const result = await connection.getRepository(hwUser).save(user);
+    return true;
+
   },
   updateUser: (user: UpdateUser): boolean => {
     const { id, firstName, lastName } = user;

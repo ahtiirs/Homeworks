@@ -21,6 +21,7 @@ app.use(cookieParser())
 // pordi nr mida api kuulab 
 const port = 3000; 
 
+import './database';
 
 /**
  * *********************** Login ******************
