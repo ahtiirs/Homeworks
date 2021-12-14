@@ -1,21 +1,26 @@
 
-import 'reflect-metadata';
-import { createConnection } from 'typeorm';
-import hwUser from './components/users/entity';
+import mysql from 'mysql2';
+import path from 'path';
+import fs from 'fs';
+import config from './config';
 
 
-createConnection({
-  type: 'mysql',
-  host: 'localhost',
-  port: 3306,
-  username: 'root',
-  password: '',
-  database: 'test',
-  entities: [hwUser],
-  synchronize: true,
-  logging: true,
-}).then((connection) => {
-  console.log(`Database connected to ${connection.name}`);
-}).catch((error) => console.log(error));
- 
-export default createConnection;
+const pool = mysql.createPool({
+  host: config.db.host,
+  user: config.db.user,
+  password: config.db.password,
+  database: config.db.database,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
+  multipleStatements: true,
+}).promise();
+
+// pool.query(`USE ${config.db.database};`).catch(() => {
+//   console.log('Creating database');
+//   const sqlPath = path.join(__dirname, '../docs/modelAndSeed.sql');
+//   const SQL = fs.readFileSync(sqlPath, { encoding: 'utf-8' });
+//   pool.query(SQL).then(() => console.log('Database created and seeded')).catch((err) => console.log(err));
+// });
+
+export default pool;
