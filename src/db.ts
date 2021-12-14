@@ -2,7 +2,7 @@ import course from './components/courses/interfaces';
 import group from './components/groups/interfaces';
 import teacher from './components/teachers/interfaces';
 import homework from './components/homeworks/interfaces';
-import { User } from './components/users/interfaces';
+import { IUser } from './components/users/interfaces';
 
 /**
 * Database interface
@@ -12,7 +12,7 @@ import { User } from './components/users/interfaces';
     courses: course[];
     teachers: teacher[];
     homeworks: homework[];
-    users: User[];
+    users: IUser[];
   
   }
 /**
@@ -25,24 +25,44 @@ const db: Db = {
       firstName: 'Juku',
       lastName: 'Juurikas',
       email: 'juku@juurikas.ee',
-      password: '$2b$10$nevnzRS0jBjFh.KEYSoQ6u75M7FdLA7vXEgbbV9iHfU7W/.6W9hFa',
+      password: '$2b$10$.ZyCi8SeFH6EoqzqkF41j.ZZasV92NkoLOdSlMPxNc//X/jIEjkPK',
       role: 'Admin',
+      dateCreated: new Date(),
+      dateUpdated: new Date(),
+      dateDeleted: null,
     },
     {
       id: 2,
       firstName: 'Mari',
       lastName: 'Maasikas',
       email: 'mari@maasikas.ee',
-      password: '$2b$10$nevnzRS0jBjFh.KEYSoQ6u75M7FdLA7vXEgbbV9iHfU7W/.6W9hFa',
-      role: 'User',
+      password: '$2b$10$.ZyCi8SeFH6EoqzqkF41j.ZZasV92NkoLOdSlMPxNc//X/jIEjkPK',
+      role: 'Admin',
+      dateCreated: new Date(),
+      dateUpdated: new Date(),
+      dateDeleted: null,
     },
     {
       id: 3,
       firstName: 'Ahti',
       lastName: 'Irs',
       email: 'ahti@hts.ee',
-      password: '$2b$10$MI/Fs2Ptku0WzqF2iuyjMuVdEY2THM/dW0CasUl/KqfMgTVQCJ9YW',
+      password: '$2b$10$.ZyCi8SeFH6EoqzqkF41j.ZZasV92NkoLOdSlMPxNc//X/jIEjkPK',
       role: 'Admin',
+      dateCreated: new Date(),
+      dateUpdated: new Date(),
+      dateDeleted: null,
+    },
+    {
+      id: 4,
+      firstName: "Kalev",
+      lastName: "Kaalikas",
+      email: "kalev@kaalikas.ee",
+      password: "$2b$10$9jshB.mCiTy1dWLOqkakf.jN7Ufts35o8yZjUB8.Fo/yxlMHwan7.",
+      role: "User",
+      dateCreated: new Date(),
+      dateUpdated: new Date(),
+      dateDeleted: null
     }
   ],
   groups: [
