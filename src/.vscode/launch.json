@@ -10,7 +10,6 @@
             "request": "launch",
             "type": "node-terminal"
         },
-
         {
             "type": "pwa-node",
             "request": "launch",
@@ -18,7 +17,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\src\\components\\general\\middlewares\\isLoggedIn.ts",
+            "program": "${file}",
             "outFiles": [
                 "${workspaceFolder}/**/*.js"
             ]

@@ -1,15 +1,15 @@
 import { Request, Response } from 'express';
 import responseCodes from '../general/responseCodes';
 import usersService from './service';
-import { UpdateUser, NewUser } from './interfaces';
+import { IUpdateUser, INewUser } from './interfaces';
 
-const usersController = {
-  getAll: (req: Request, res: Response) => {
+const usersController =  {
+  getAll: async (req: Request, res: Response) => {
     const { role, id } = res.locals.user;
-    
+       
     if (role === 'Admin') {
       
-      const users = usersService.getAllUsers();
+      const users = await usersService.getAllUsers();
             return res.status(responseCodes.ok).json({
         users,}
       );
@@ -27,14 +27,14 @@ const usersController = {
     });
 
   },
-  getById: (req: Request, res: Response) => {
+  getById: async(req: Request, res: Response) => {
     const id: number = parseInt(req.params.id, 10);
     if (!id) {
       return res.status(responseCodes.badRequest).json({
         error: 'No valid id provided',
       });
     }
-    const user = usersService.getUserById(id);
+    const user = await usersService.getUserById(id);
     if (!user) {
       return res.status(responseCodes.badRequest).json({
         error: `No user found with id: ${id}`,
@@ -60,7 +60,7 @@ const usersController = {
     usersService.removeUser(id);
     return res.status(responseCodes.noContent).json({});
   },
-  add: (req: Request, res: Response) => {
+  add: async (req: Request, res: Response) => {
     const {
       firstName, lastName, password, email,
     } = req.body;
@@ -84,14 +84,14 @@ const usersController = {
         error: 'Password is required',
       });
     }
-    const newUser: NewUser = {
+    const newUser: INewUser = {
       firstName,
       lastName,
       email,
       password,
       role: 'User',
     };
-    const id = usersService.createUser(newUser);
+    const id = await usersService.createUser(newUser);
     return res.status(responseCodes.created).json({
       id,
     });
@@ -115,7 +115,7 @@ const usersController = {
         error: `No user found with id: ${id}`,
       });
     }
-    const updateUser: UpdateUser = {
+    const updateUser: IUpdateUser = {
       id,
       firstName,
       lastName,
