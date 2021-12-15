@@ -20,7 +20,7 @@ const jwtService = {
       console.log('Payload:'+payload);
       return payload ;
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       return false;
     }
 

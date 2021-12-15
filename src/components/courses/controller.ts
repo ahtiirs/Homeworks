@@ -4,17 +4,29 @@ import responseCodes from '../general/responseCodes'
 import coursesService from './service';
 const coursesController = {
 
-getAll: (req: Request, res: Response) => {
-  const data = coursesService.getAll();  
+getAll: async (req: Request, res: Response) => {
+  const courses = await coursesService.getAll();  
   return res.status(responseCodes.ok).json({
-  data,
+  courses,
     });
   },
   
-getById: (req: Request, res: Response) => {
-  const data=coursesService.getById(req , res );
-  return data;
+getById: async (req: Request, res: Response) => {
+  const id: number = parseInt(req.params.id, 10);
+  if (!id) { return res.status(responseCodes.badRequest).json({
+    error: 'No valid id provided', });
+  }
+    const course = await coursesService.getById(id);
+    console.log(course);
+
+  if (!course) { return res.status(responseCodes.badRequest).json({
+      error: `No user found with id: ${id}`, });
+    }
+  return res.status(responseCodes.ok).json({
+    course });
   },
+
+
 deleteById: (req: Request, res: Response) => {
   const data=coursesService.deleteById(req , res );
   return data;

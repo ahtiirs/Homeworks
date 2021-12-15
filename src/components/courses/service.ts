@@ -1,34 +1,55 @@
 import {Request, Response} from 'express';
+import { RowDataPacket, FieldPacket, ResultSetHeader } from 'mysql2';
 import db from './../../db'
 import course from './interfaces';
 import responseCodes from '../general/responseCodes'
+import pool from '../../database';
 
 
 const coursesService = {
-    getAll:() =>{
-        const { courses } = db;
-        return courses;
-    },
-    getById:(req: Request, res: Response ) =>{ 
-        const id: number = parseInt(req.params.id, 10);
-        console.log(id);
-        if (!id) {
-          return res.status(responseCodes.badRequest).json({
-            error: 'No valid id provided',
-          });
-        }
-        const course = db.courses.find((element) => element.id === id);
-        
-        if (!course) {
-          return res.status(responseCodes.badRequest).json({
-            error: `No user found with id: ${id}`,
-          });
-        }
-        return res.status(responseCodes.ok).json({
-          course,
-        });
+    getAll: async(): Promise<RowDataPacket[] | boolean> => {
+      try {
+          const [courses,  fields]: [RowDataPacket[], FieldPacket[]] = 
+          await pool.query('SELECT *  FROM courses WHERE 1;');
+          console.log(courses);
+          return courses;
+      } catch (error) {
+        console.log(error);
+        return false;
+      }
 
     },
+    getById: async (id:number): Promise<RowDataPacket| boolean > => { 
+      try {
+        const [courses,  fields]: [RowDataPacket[], FieldPacket[]] = await pool.query(
+          'SELECT *  FROM courses WHERE id = ? ;',id);
+          console.log(courses);
+          return courses[0];
+        } catch (error) {
+          console.log(error);
+          return false;
+        }
+    },
+    // getById:(req: Request, res: Response ) =>{ 
+    //     const id: number = parseInt(req.params.id, 10);
+    //     console.log(id);
+    //     if (!id) {
+    //       return res.status(responseCodes.badRequest).json({
+    //         error: 'No valid id provided',
+    //       });
+    //     }
+    //     const course = db.courses.find((element) => element.id === id);
+        
+    //     if (!course) {
+    //       return res.status(responseCodes.badRequest).json({
+    //         error: `No user found with id: ${id}`,
+    //       });
+    //     }
+    //     return res.status(responseCodes.ok).json({
+    //       course,
+    //     });
+
+    // },
     deleteById: (req: Request, res: Response) => {
       const id: number = parseInt(req.params.id, 10);
       if (!id) {
