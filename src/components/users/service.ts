@@ -65,16 +65,38 @@ const usersService = {
       return false;
     }
   },
-  updateUser: (user: IUpdateUser): boolean => {
-    const { id, firstName, lastName } = user;
-    const index = db.users.findIndex((element) => element.id === id);
-    if (firstName) {
-      db.users[index].firstName = firstName;
+  updateUser: async(user: IUpdateUser): Promise<boolean> => {
+
+    const currentDate = (new Date()).toLocaleString("en-US");
+    const id = user.id;
+   
+    let edituser:any = {
+      ...user,
+      dateUpdated: currentDate,
+      };
+    delete edituser.id;
+
+    try {
+      const [user,  fields]: [RowDataPacket[], FieldPacket[]] = await pool.query(
+      'UPDATE users SET ? WHERE id = ? AND dateDeleted IS NULL;', [edituser, id]);
+       return true;
+    } catch (error) {
+      console.log(error);
+      return false;
     }
-    if (lastName) {
-      db.users[index].lastName = lastName;
-    }
-    return true;
+
+
+
+
+    // const { id, firstName, lastName } = user;
+    // const index = db.users.findIndex((element) => element.id === id);
+    // if (firstName) {
+    //   db.users[index].firstName = firstName;
+    // }
+    // if (lastName) {
+    //   db.users[index].lastName = lastName;
+    // }
+    // return true;
   },
 };
 

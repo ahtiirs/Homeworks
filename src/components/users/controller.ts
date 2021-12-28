@@ -96,7 +96,7 @@ const usersController =  {
       id,
     });
   },
-  updateById: (req: Request, res: Response) => {
+  updateById: async(req: Request, res: Response) => {
     const id: number = parseInt(req.params.id, 10);
     const { firstName, lastName } = req.body;
     if (!id) {
@@ -109,18 +109,19 @@ const usersController =  {
         error: 'Nothing to update',
       });
     }
-    const user = usersService.getUserById(id);
-    if (!user) {
-      return res.status(responseCodes.badRequest).json({
-        error: `No user found with id: ${id}`,
-      });
-    }
+    // const user = usersService.getUserById(id);    
     const updateUser: IUpdateUser = {
       id,
       firstName,
       lastName,
     };
-    usersService.updateUser(updateUser);
+    const result = await usersService.updateUser(updateUser);
+    if (!result) {
+      return res.status(responseCodes.badRequest).json({
+        error: `No user found with id: ${id}`,
+      });
+    }
+
     return res.status(responseCodes.noContent).json({});
   },
 };

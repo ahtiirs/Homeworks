@@ -30,83 +30,43 @@ const coursesService = {
           return false;
         }
     },
-    // getById:(req: Request, res: Response ) =>{ 
-    //     const id: number = parseInt(req.params.id, 10);
-    //     console.log(id);
-    //     if (!id) {
-    //       return res.status(responseCodes.badRequest).json({
-    //         error: 'No valid id provided',
-    //       });
-    //     }
-    //     const course = db.courses.find((element) => element.id === id);
-        
-    //     if (!course) {
-    //       return res.status(responseCodes.badRequest).json({
-    //         error: `No user found with id: ${id}`,
-    //       });
-    //     }
-    //     return res.status(responseCodes.ok).json({
-    //       course,
-    //     });
 
-    // },
-    deleteById: (req: Request, res: Response) => {
-      const id: number = parseInt(req.params.id, 10);
-      if (!id) {
-        return res.status(responseCodes.badRequest).json({
-          error: 'No valid id provided',
-        });
+    deleteById: async (id:number): Promise<boolean> =>{
+      const currentDate = (new Date()).toLocaleString("en-US");
+      
+      try {
+        const [user,  fields]: [RowDataPacket[], FieldPacket[]] = await pool.query(
+        'UPDATE courses SET dateDeleted = ? WHERE id = ? AND dateDeleted IS NULL;', [currentDate, id]);
+         return true;
+      } catch (error) {
+        console.log(error);
+        return false;
       }
-      const index = db.courses.findIndex((element) => element.id === id);
-      if (index < 0) {
-        return res.status(responseCodes.badRequest).json({
-          message: `Course not found with id: ${id}`,
-        });
+    }, 
+    
+    
+    add: async (Name: string): Promise<false|Number> => {
+   
+      try {    
+      const [result]:[ResultSetHeader, FieldPacket[]] = await pool.query('INSERT INTO courses SET name=?;',[Name]);
+      return result.insertId;
+      } catch (error) {
+        console.log(error);
+        return false;
       }
-      db.courses.splice(index, 1);
-      return res.status(responseCodes.noContent).json({});
-    },  
-    add: (req: Request, res: Response) => {
-      const { Name } = req.body;
-      if (!Name) {
-        return res.status(responseCodes.badRequest).json({
-          error: 'Course name is required',
-        });
-      }
-      const id = db.courses.length + 1;
-      db.courses.push({
-        id,
-        Name
-      });
-      return res.status(responseCodes.created).json({
-        id,
-      });
     },
-    updateById: (req: Request, res: Response) => {
-      const id: number = parseInt(req.params.id, 10);
-      const { Name } = req.body;
-      if (!id) {
-        return res.status(responseCodes.badRequest).json({
-          error: 'No valid id provided',
-        });
+
+
+    
+    updateById: async (id:number, Name: string): Promise<boolean> => {
+      try {
+        const [user,  fields]: [RowDataPacket[], FieldPacket[]] = await pool.query(
+        'UPDATE courses SET name= ? WHERE id = ? AND dateDeleted IS NULL;', [Name, id]);
+         return true;
+      } catch (error) {
+        console.log(error);
+        return false;
       }
-      if (!Name ) {
-        return res.status(responseCodes.badRequest).json({
-          error: 'Nothing to update',
-        });
-      }
-      const index = db.courses.findIndex((element) => element.id === id);
-      if (index < 0) {
-        return res.status(responseCodes.badRequest).json({
-          error: `No course found with id: ${id}`,
-        });
-      }
-      if (Name) {
-        db.courses[index].Name = Name;
-      }
-     
-     
-      return res.status(responseCodes.noContent).json({});
     },
 };
 
