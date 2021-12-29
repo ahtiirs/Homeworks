@@ -12,7 +12,7 @@ const usersController =  {
       const users = await usersService.getAllUsers();
             return res.status(responseCodes.ok).json({
         users,}
-      );
+      ); 
     }
 
     if (role === 'User') {

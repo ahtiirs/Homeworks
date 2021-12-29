@@ -4,16 +4,29 @@ import db from './../../db';
 import groupsService from './service';
 const groupsController = {
 
-getAll: (req: Request, res: Response) => {
-          const groupsList = groupsService.getAllgroups();  
+getAll: async(req: Request, res: Response) => {
+          const groupsList = await groupsService.getAllgroups();  
           return res.status(responseCodes.ok).json({
           groupsList,
         });
       },
     
-getById: (req: Request, res: Response) => {
-  const Group = groupsService.getGroupById(req , res );
-  return Group;
+getById: async(req: Request, res: Response) => {
+  const id: number = parseInt(req.params.id, 10);
+  if (!id) {
+    return res.status(responseCodes.badRequest).json({
+      error: 'No valid id provided',
+    });
+  }
+    const result = await groupsService.getGroupById(id);
+  // const group = db.groups.find((element) => element.id === id);
+  if (!result) {
+    return res.status(responseCodes.badRequest).json({
+      error: `No group found with id: ${id}`,
+    });
+  }
+  return res.status(responseCodes.ok).json({result,});
+
   },
     
 deleteById: (req: any, res: any) => {

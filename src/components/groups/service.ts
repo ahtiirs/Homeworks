@@ -2,29 +2,35 @@ import {Request, Response} from 'express';
 import db from './../../db'
 import group from './interfaces';
 import responseCodes from '../general/responseCodes'
+import pool from '../../database';
+import { RowDataPacket, FieldPacket, ResultSetHeader } from 'mysql2';
 
 
 const groupsService = {
-    getAllgroups:() =>{
-        const { groups } = db;
-        return groups;
-    },
-    getGroupById:(req: Request, res: Response ) =>{ 
-        const id: number = parseInt(req.params.id, 10);
-        if (!id) {
-          return res.status(responseCodes.badRequest).json({
-            error: 'No valid id provided',
-          });
-        }
-        const group = db.groups.find((element) => element.id === id);
-        if (!group) {
-          return res.status(responseCodes.badRequest).json({
-            error: `No group found with id: ${id}`,
-          });
-        }
-        return res.status(responseCodes.ok).json({
-          group,
-        });
+   getAllgroups: async(): Promise<RowDataPacket[] | boolean> => {
+     
+    try {   
+      const [groups,  fields]: [RowDataPacket[], FieldPacket[] ] =
+      await pool.query('SELECT id, name FROM HomeWork.groups ;');
+      return groups;
+    } catch (error) {
+    console.log(error);
+    return false;
+    }
+  },  
+
+
+
+    getGroupById:async(id: number): Promise<RowDataPacket | boolean | group> => {
+      try {
+        const [user,  fields]: [RowDataPacket[], FieldPacket[]] = await pool.query(
+          'SELECT * FROM HomeWork.groups WHERE id = ? AND dateDeleted IS NULL;',id);
+          console.log(user);
+        return user[0];
+      } catch (error) {
+        console.log(error);
+        return false;
+      }
 
     },
     deleteGroupById:(req: Request, res: Response ) =>{

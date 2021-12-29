@@ -85,18 +85,6 @@ const usersService = {
       return false;
     }
 
-
-
-
-    // const { id, firstName, lastName } = user;
-    // const index = db.users.findIndex((element) => element.id === id);
-    // if (firstName) {
-    //   db.users[index].firstName = firstName;
-    // }
-    // if (lastName) {
-    //   db.users[index].lastName = lastName;
-    // }
-    // return true;
   },
 };
 
