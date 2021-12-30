@@ -4,29 +4,88 @@ import db from './../../db';
 import teachersService from './service';
 const teachersController = {
 
-  getAll: (req: Request, res: Response) => {
-        const data = teachersService.getAll(req , res );  
-        return res.status(responseCodes.ok).json({
-        data,
+  getAll: async(req: Request, res: Response) =>  {
+        const data = await teachersService.getAll();  
+        return res.status(responseCodes.ok).json({data, });
+  },
+
+
+  getById: async(req: Request, res: Response) =>  {
+    const id: number = parseInt(req.params.id, 10);
+    if (!id) {
+      return res.status(responseCodes.badRequest).json({
+        error: 'No valid id provided',
       });
+    }
+    const teacher=teachersService.getById(id);
+    if (!teacher) {
+      return res.status(responseCodes.badRequest).json({
+        error: `No teacher found with id: ${id}`,
+      });
+    }
+    return res.status(responseCodes.ok).json({
+      teacher,
+    });
+
   },
-  getById: (req: Request, res: Response) => {
-        const data=teachersService.getById(req , res );
-        return data;
+  deleteById: async(req: Request, res: Response) =>  {
+    const id: number = parseInt(req.params.id, 10);
+    if (!id) { 
+      return res.status(responseCodes.badRequest).json({
+        error: 'No valid id provided',
+      });
+    }
+    const data = await teachersService.deleteById(id);
+    if (!data) {
+      return res.status(responseCodes.badRequest).json({
+        message: `Teacher not found with id: ${id}`,
+      });
+    }
+    return res.status(responseCodes.noContent).json({});
   },
-  deleteById: (req: Request, res: Response) => {
-      const data=teachersService.deleteById(req , res );
-      return data;
+
+  add: async(req: Request, res: Response) =>  {
+    const { Name } = req.body;
+    if (!Name) {
+      return res.status(responseCodes.badRequest).json({
+        error: 'Teacher name is required',
+      });
+    }
+       
+    const id= await teachersService.add(Name);
+  
+    if (!id) {
+      return res.status(responseCodes.badRequest).json({
+        message: "Something went wrong with sql connection", });
+    }
+    return res.status(responseCodes.created).json({
+      id,
+    });
+
   },
-  add: (req: Request, res: Response) => {
-    const data=teachersService.add(req , res );
-    return data;
-  },
-  updateById: (req: Request, res: Response) => {
-    const data=teachersService.updateById(req , res );
-    return data;
+  updateById: async(req: Request, res: Response) =>  {
+    const id: number = parseInt(req.params.id, 10);
+    const { Name } = req.body;
+    if (!id) {
+      return res.status(responseCodes.badRequest).json({
+        error: 'No valid id provided',
+      });
+    }
+    if (!Name ) {
+      return res.status(responseCodes.badRequest).json({
+        error: 'Nothing to update',
+      });
+    }
+    const data = await teachersService.updateById(id, Name);
+    if (!data) {
+      return res.status(responseCodes.badRequest).json({
+        error: `No teacher found with id: ${id}`,
+      });
+    }
+    return res.status(responseCodes.noContent).json({});
   },
    
 };
 
 export default teachersController;
+ 

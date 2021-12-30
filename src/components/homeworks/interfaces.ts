@@ -1,11 +1,19 @@
 // homework interface
 // 
-interface homework {
-  id: number;
-  group: number;
-  teacher: number;
-  Name: string;
-  dueDate: string;
+
+interface newHomework {
+  user_id?: number | null;
+  group_id: number | null;
+  teacher_id: number | null;
+  description: string;
+  dueDate: string | null;
+  dateCreated?: string | null;
+  dateDeleted?: string | null;
 }
 
-  export default homework;
+interface homework extends newHomework{
+  id: number;
+}
+
+
+export {homework, newHomework} ;

@@ -1,7 +1,7 @@
 import course from './components/courses/interfaces';
 import group from './components/groups/interfaces';
 import teacher from './components/teachers/interfaces';
-import homework from './components/homeworks/interfaces';
+import {homework} from './components/homeworks/interfaces';
 import { IUser } from './components/users/interfaces';
 
 /**
@@ -138,23 +138,23 @@ const db: Db = {
     homeworks: [
       {
         id: 1,
-        group: 1,
-        teacher: 1,
-        Name: 'NODE Api 3 sisendpnktiga eri tegevustega',
+        group_id: 1,
+        teacher_id: 1,
+        description: 'NODE Api 3 sisendpnktiga eri tegevustega',
         dueDate: '27.09.2021',
       },
       {
         id: 2,
-        group: 1,
-        teacher: 1,
-        Name: 'NODE Api teha komponentideks ja dokumenteerida',
-        dueDate: '10.11.2021',
+        group_id: 1,
+        teacher_id: 1,
+        description: 'NODE Api 3 sisendpnktiga eri tegevustega',
+        dueDate: '27.09.2021',
       },
       {
         id: 3,
-        group: 1,
-        teacher: 2,
-        Name: 'miski muu asi',
+        group_id: 1,
+        teacher_id: 1,
+        description: 'NODE Api 3 sisendpnktiga eri tegevustega',
         dueDate: '27.09.2021',
       },
     ],

@@ -1,95 +1,73 @@
 import {Request, Response} from 'express';
 import db from './../../db'
+import pool from '../../database';
+import { RowDataPacket, FieldPacket, ResultSetHeader } from 'mysql2';
 import teacher from './interfaces';
 import responseCodes from '../general/responseCodes'
 
 
 const teachersService = {
-    getAll:(req: Request, res: Response )  =>{
-      const { teachers } = db;
-      return res.status(responseCodes.ok).json({
-        teachers,
-      });
+    getAll: async(): Promise<RowDataPacket[] | boolean> => {
+     
+      try {   
+        const [teachers,  fields]: [RowDataPacket[], FieldPacket[] ] =
+        await pool.query('SELECT id, name FROM HomeWork.teachers ;');
+        return teachers;
+      } catch (error) {
+      console.log(error);
+      return false;
+      }
+ 
+
     },
     
-    getById:(req: Request, res: Response ) =>{
-      const id: number = parseInt(req.params.id, 10);
-      if (!id) {
-        return res.status(responseCodes.badRequest).json({
-          error: 'No valid id provided',
-        });
+    getById:async(id: number): Promise<RowDataPacket | boolean | teacher> => {
+      try {
+        const [teachers,  fields]: [RowDataPacket[], FieldPacket[]] = await pool.query(
+          'SELECT * FROM HomeWork.teachers WHERE id = ? AND dateDeleted IS NULL;',id);
+          console.log(teachers);
+        return teachers[0];
+      } catch (error) {
+        console.log(error); 
+        return false;
       }
-      const teacher = db.teachers.find((element) => element.id === id);
-      if (!teacher) {
-        return res.status(responseCodes.badRequest).json({
-          error: `No teacher found with id: ${id}`,
-        });
-      }
-      return res.status(responseCodes.ok).json({
-        teacher,
-      });
+
     },
     
-    deleteById: (req: Request, res: Response) => {
-      const id: number = parseInt(req.params.id, 10);
-      if (!id) {
-        return res.status(responseCodes.badRequest).json({
-          error: 'No valid id provided',
-        });
+    deleteById: async (id:number): Promise<boolean>=>{
+      const currentDate = (new Date()).toLocaleString("en-US");
+      try {
+        const [tea,  fields]: [RowDataPacket[], FieldPacket[]] = await pool.query(
+        'UPDATE teachers SET dateDeleted = ? WHERE id = ? AND dateDeleted IS NULL;', [currentDate, id]);
+         return true;
+      } catch (error) {
+        console.log(error);
+        return false;
       }
-      const index = db.teachers.findIndex((element) => element.id === id);
-      if (index < 0) {
-        return res.status(responseCodes.badRequest).json({
-          message: `Teacher not found with id: ${id}`,
-        });
-      }
-      db.teachers.splice(index, 1);
-      return res.status(responseCodes.noContent).json({});
+
     },
 
-    add: (req: Request, res: Response) => {
-      const { Name } = req.body;
-      if (!Name) {
-        return res.status(responseCodes.badRequest).json({
-          error: 'Teacher name is required',
-        });
+    add: async (Name: string): Promise<false|Number> => {
+      try {    
+      const [result]:[ResultSetHeader, FieldPacket[]] = await pool.query('INSERT INTO teachers SET name=?;',[Name]);
+      return result.insertId;
+      } catch (error) {
+        console.log(error);
+        return false;
       }
-      const id = db.teachers.length + 1;
-      db.teachers.push({
-        id,
-        Name
-      });
-      return res.status(responseCodes.created).json({
-        id,
-      });
+
     },
 
-    updateById: (req: Request, res: Response) => {
-   const id: number = parseInt(req.params.id, 10);
-   const { Name } = req.body;
-   if (!id) {
-     return res.status(responseCodes.badRequest).json({
-       error: 'No valid id provided',
-     });
-   }
-   if (!Name ) {
-     return res.status(responseCodes.badRequest).json({
-       error: 'Nothing to update',
-     });
-   }
-   const index = db.teachers.findIndex((element) => element.id === id);
-   if (index < 0) {
-     return res.status(responseCodes.badRequest).json({
-       error: `No teacher found with id: ${id}`,
-     });
-   }
-   if (Name) {
-     db.teachers[index].Name = Name;
-   }
-  
-  
-   return res.status(responseCodes.noContent).json({});
- },
+    updateById: async (id:number, Name: string): Promise<boolean> =>{
+      try {
+        const [teachers,  fields]: [RowDataPacket[], FieldPacket[]] = await pool.query(
+        'UPDATE teachers SET name= ? WHERE id = ? AND dateDeleted IS NULL;', [Name, id]);
+         return true;
+      } catch (error) {
+        console.log(error);
+        return false;
+      }
+  },
 };
 
 

@@ -28,66 +28,42 @@ const groupsService = {
           console.log(user);
         return user[0];
       } catch (error) {
+        console.log(error); 
+        return false;
+      }
+    },
+
+    deleteGroupById: async (id:number): Promise<boolean>=>{
+      const currentDate = (new Date()).toLocaleString("en-US");
+      try {
+        const [user,  fields]: [RowDataPacket[], FieldPacket[]] = await pool.query(
+        'UPDATE groups SET dateDeleted = ? WHERE id = ? AND dateDeleted IS NULL;', [currentDate, id]);
+         return true;
+      } catch (error) {
         console.log(error);
         return false;
       }
 
     },
-    deleteGroupById:(req: Request, res: Response ) =>{
-      const id: number = parseInt(req.params.id, 10);
-      if (!id) {
-        return res.status(responseCodes.badRequest).json({
-          error: 'No valid id provided',
-        });
+
+    addGroup: async (Name: string): Promise<false|Number> => {
+      try {    
+      const [result]:[ResultSetHeader, FieldPacket[]] = await pool.query('INSERT INTO groups SET name=?;',[Name]);
+      return result.insertId;
+      } catch (error) {
+        console.log(error);
+        return false;
       }
-      const index = db.groups.findIndex((element) => element.id === id);
-      if (index < 0) {
-        return res.status(responseCodes.badRequest).json({
-          message: `Group not found with id: ${id}`,
-        });
-      }
-      db.groups.splice(index, 1);
-      return res.status(responseCodes.noContent).json({});
     },
-    addGroup: (req: Request, res: Response ) =>{
-      const { Name } = req.body;
-      if (!Name) {
-        return res.status(responseCodes.badRequest).json({
-          error: 'Group name is required',
-        });
+    updateGroupById: async (id:number, Name: string): Promise<boolean> =>{
+      try {
+        const [user,  fields]: [RowDataPacket[], FieldPacket[]] = await pool.query(
+        'UPDATE groups SET name= ? WHERE id = ? AND dateDeleted IS NULL;', [Name, id]);
+         return true;
+      } catch (error) {
+        console.log(error);
+        return false;
       }
-      const id = db.groups.length + 1;
-      db.groups.push({
-        id,
-        Name
-      });
-      return res.status(responseCodes.created).json({
-        id,
-      });
-    },
-    updateGroupById: (req: Request, res: Response) =>{
-      const id: number = parseInt(req.params.id, 10);
-      const { Name } = req.body;
-      if (!id) {
-        return res.status(responseCodes.badRequest).json({
-          error: 'No valid id provided',
-        });
-      }
-      if (!Name ) {
-        return res.status(responseCodes.badRequest).json({
-          error: 'Nothing to update',
-        });
-      }
-      const index = db.groups.findIndex((element) => element.id === id);
-      if (index < 0) {
-        return res.status(responseCodes.badRequest).json({
-          error: `No group found with id: ${id}`,
-        });
-      }
-      if (Name) {
-        db.groups[index].Name = Name;
-      }
-        return res.status(responseCodes.noContent).json({});
     },
 };
 
