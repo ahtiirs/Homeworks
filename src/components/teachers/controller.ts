@@ -17,7 +17,7 @@ const teachersController = {
         error: 'No valid id provided',
       });
     }
-    const teacher=teachersService.getById(id);
+    const teacher = await teachersService.getById(id);
     if (!teacher) {
       return res.status(responseCodes.badRequest).json({
         error: `No teacher found with id: ${id}`,

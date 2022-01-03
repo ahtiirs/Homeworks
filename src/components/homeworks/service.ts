@@ -33,7 +33,7 @@ const coursesService = {
     }, 
     
     deleteById: async (id:number): Promise<boolean> =>{
-      const currentDate = (new Date()).toLocaleString("en-US");
+      const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
       try {
         const [user,  fields]: [RowDataPacket[], FieldPacket[]] = await pool.query(
         'UPDATE homeworks SET dateDeleted = ? WHERE id = ? AND dateDeleted IS NULL;', [currentDate, id]);

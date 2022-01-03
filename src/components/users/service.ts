@@ -39,7 +39,7 @@ const usersService = {
   removeUser: async(id: number): Promise<boolean> => {
     // const index = db.users.findIndex((element) => element.id === id);
     // db.users.splice(index, 1);
-    const currentDate = (new Date()).toLocaleString("en-US");
+    const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
     try {
       const [user,  fields]: [RowDataPacket[], FieldPacket[]] = await pool.query(
       'UPDATE users SET dateDeleted = ? WHERE id = ? AND dateDeleted IS NULL;', [currentDate, id]);
@@ -67,7 +67,7 @@ const usersService = {
   },
   updateUser: async(user: IUpdateUser): Promise<boolean> => {
 
-    const currentDate = (new Date()).toLocaleString("en-US");
+    const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
     const id = user.id;
    
     let edituser:any = {

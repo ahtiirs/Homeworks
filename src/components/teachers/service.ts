@@ -24,8 +24,9 @@ const teachersService = {
     getById:async(id: number): Promise<RowDataPacket | boolean | teacher> => {
       try {
         const [teachers,  fields]: [RowDataPacket[], FieldPacket[]] = await pool.query(
-          'SELECT * FROM HomeWork.teachers WHERE id = ? AND dateDeleted IS NULL;',id);
-          console.log(teachers);
+          // 'SELECT * FROM HomeWork.teachers WHERE id = ? AND dateDeleted IS NULL;',id);
+          'SELECT * FROM HomeWork.teachers WHERE id = ? ;',id);
+          console.log(teachers[0]);
         return teachers[0];
       } catch (error) {
         console.log(error); 
@@ -35,7 +36,8 @@ const teachersService = {
     },
     
     deleteById: async (id:number): Promise<boolean>=>{
-      const currentDate = (new Date()).toLocaleString("en-US");
+      // const currentDate = (new Date()).toLocaleString("en-US");
+      const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
       try {
         const [tea,  fields]: [RowDataPacket[], FieldPacket[]] = await pool.query(
         'UPDATE teachers SET dateDeleted = ? WHERE id = ? AND dateDeleted IS NULL;', [currentDate, id]);
