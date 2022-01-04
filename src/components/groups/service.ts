@@ -37,7 +37,7 @@ const groupsService = {
       const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
       try {
         const [user,  fields]: [RowDataPacket[], FieldPacket[]] = await pool.query(
-        'UPDATE groups SET dateDeleted = ? WHERE id = ? AND dateDeleted IS NULL;', [currentDate, id]);
+        'UPDATE HomeWork.groups SET dateDeleted = ? WHERE id = ? AND dateDeleted IS NULL;', [currentDate, id]);
          return true;
       } catch (error) {
         console.log(error);
@@ -48,7 +48,7 @@ const groupsService = {
 
     addGroup: async (Name: string): Promise<false|Number> => {
       try {    
-      const [result]:[ResultSetHeader, FieldPacket[]] = await pool.query('INSERT INTO groups SET name=?;',[Name]);
+      const [result]:[ResultSetHeader, FieldPacket[]] = await pool.query('INSERT INTO HomeWork.groups SET name=?;',[Name]);
       return result.insertId;
       } catch (error) {
         console.log(error);
@@ -58,7 +58,7 @@ const groupsService = {
     updateGroupById: async (id:number, Name: string): Promise<boolean> =>{
       try {
         const [user,  fields]: [RowDataPacket[], FieldPacket[]] = await pool.query(
-        'UPDATE groups SET name= ? WHERE id = ? AND dateDeleted IS NULL;', [Name, id]);
+        'UPDATE HomeWork.groups SET name= ? WHERE id = ? AND dateDeleted IS NULL;', [Name, id]);
          return true;
       } catch (error) {
         console.log(error);
