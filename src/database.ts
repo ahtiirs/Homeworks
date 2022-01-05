@@ -16,11 +16,11 @@ const pool = mysql.createPool({
   multipleStatements: true,
 }).promise();
 
-// pool.query(`USE ${config.db.database};`).catch(() => {
-//   console.log('Creating database');
-//   const sqlPath = path.join(__dirname, '../docs/modelAndSeed.sql');
-//   const SQL = fs.readFileSync(sqlPath, { encoding: 'utf-8' });
-//   pool.query(SQL).then(() => console.log('Database created and seeded')).catch((err) => console.log(err));
-// });
+pool.query(`USE ${config.db.database};`).catch(() => {
+  console.log('Creating database');
+  const sqlPath = path.join(__dirname, '../SQL/database_init.sql');
+  const SQL = fs.readFileSync(sqlPath, { encoding: 'utf-8' });
+  pool.query(SQL).then(() => console.log('Database created and seeded')).catch((err) => console.log(err));
+});
 
 export default pool;
