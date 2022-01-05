@@ -9,7 +9,7 @@ import pool from '../../database';
 const usersService = {
 
   getAllUsers: async(): Promise<RowDataPacket[]> => {
-    const [users,  fields]: [RowDataPacket[], FieldPacket[]] = await pool.query('SELECT id, email, dateCreated, dateUpdated  FROM users WHERE dateDeleted IS NULL;');
+    const [users,  fields]: [RowDataPacket[], FieldPacket[]] = await pool.query('SELECT id, firstName, lastName, email, role, dateCreated, dateUpdated, dateDeleted  FROM users WHERE dateDeleted IS NULL;');
     return users;
    },
   getUserById: async(id: number): Promise<RowDataPacket | boolean | IUser> => {
@@ -17,7 +17,7 @@ const usersService = {
     try {
       const [user,  fields]: [RowDataPacket[], FieldPacket[]] = await pool.query(
         'SELECT firstName, lastName, email, role, dateCreated, dateUpdated  FROM users WHERE id = ? AND dateDeleted IS NULL;',id);
-        console.log(user);
+        // console.log(user);
       return user[0];
     } catch (error) {
       // console.log(error);
@@ -52,13 +52,17 @@ const usersService = {
   },
   createUser: async (newUser: INewUser): Promise<Number | false>=> {
     try {
+          const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
           const hashedPassword = await hashService.hash(newUser.password);
           const user: INewUser = {
           ...newUser,
           password: hashedPassword,
+          dateCreated: currentDate,
           };
-
+        // console.log(hashedPassword);
+        // console.log(user);
         const [result]:[ResultSetHeader, FieldPacket[]] = await pool.query('INSERT INTO users SET ?;',[user]);
+        // console.log(result);
         return result.insertId;
     } catch (error) {
       // console.log(error);

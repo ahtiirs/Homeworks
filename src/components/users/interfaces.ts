@@ -6,12 +6,12 @@
   lastName: string;
   email: string;
   password: string;
+  dateCreated?: string;
   role: 'Admin' | 'User';
 }
 
 interface IUser extends INewUser{
   id: number;
-  dateCreated: Date;
   dateUpdated: Date;
   dateDeleted: Date | null;
 }

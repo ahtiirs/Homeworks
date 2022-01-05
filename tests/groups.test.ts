@@ -88,7 +88,7 @@ describe('groups controller test', () => {
       // expect(response.body.group.length).to.greaterThan(0);
     });
 
-    it('Test 7 - responds with code 204 and added group', async () => {
+    it('Test 8 - responds with code 204 and added group', async () => {
       const response = await request(app)
         .patch(`/groups/${newId}`)
         .set('Authorization', `Bearer ${token}`)
@@ -101,7 +101,7 @@ describe('groups controller test', () => {
       // expect(response.body.group.length).to.greaterThan(0);
     });
 
-    it('Test 8 - responds with code 400 and added group', async () => {
+    it('Test 9 - responds with code 400 and added group', async () => {
       const response = await request(app)
         .get(`/groups/abc`)
         .set('Authorization', `Bearer ${token}`);
@@ -112,7 +112,7 @@ describe('groups controller test', () => {
         expect(response.body.error).to.equal('No valid id provided');
       // expect(response.body.group.length).to.greaterThan(0);
     });
-    it('Test 9 - responds with code 400 and added group', async () => {
+    it('Test 10 - responds with code 400 and added group', async () => {
       const response = await request(app)
         .get(`/groups/99999999`)
         .set('Authorization', `Bearer ${token}`);
@@ -123,7 +123,7 @@ describe('groups controller test', () => {
         expect(response.body.error).to.equal('No group found with id: 99999999');
       });
 
-     it('Test 10 - responds with code 204 and delete added test ID ', async () => {
+     it('Test 11 - responds with code 204 and delete added test ID ', async () => {
       const response = await request(app)
         .delete(`/groups/${newId}`)
         .set('Authorization', `Bearer ${token}`);
@@ -133,7 +133,7 @@ describe('groups controller test', () => {
 
      });
 
-     it('Test 11 - responds with code 400 and error no valid ID ', async () => {
+     it('Test 12 - responds with code 400 and error no valid ID ', async () => {
       const response = await request(app)
         .delete(`/groups/abcid`)
         .set('Authorization', `Bearer ${token}`);
@@ -144,7 +144,7 @@ describe('groups controller test', () => {
       expect(response.body.error).to.equal('No valid id provided');
      });
 
-     it('Test 12 - responds with code 400 and ID not found ', async () => {
+     it('Test 13 - responds with code 400 and ID not found ', async () => {
       const response = await request(app)
         .delete(`/groups/${newId}`)
         .set('Authorization', `Bearer ${token}`);
@@ -161,3 +161,4 @@ describe('groups controller test', () => {
 
   
 
+ 

@@ -6,8 +6,9 @@ import { IUpdateUser, INewUser } from './interfaces';
 const usersController =  {
   getAll: async (req: Request, res: Response) => {
     const { role, id } = res.locals.user;
-       
-    if (role === 'Admin') {
+    // console.log(role);
+    if (role === 'admin') {
+      // if (1) {
       
       const users = await usersService.getAllUsers();
             return res.status(responseCodes.ok).json({
@@ -15,7 +16,7 @@ const usersController =  {
       ); 
     }
 
-    if (role === 'User') {
+    if (role === 'user') {
 
       const user = usersService.getUserById(id);
       return res.status(responseCodes.ok).json({
