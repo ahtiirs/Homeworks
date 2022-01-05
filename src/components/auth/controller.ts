@@ -4,7 +4,7 @@ import responseCodes from '../general/responseCodes';
 
 const authController = {
   login: async (req: Request, res: Response) => {
-    console.log('hakkan logima');
+    // console.log('hakkan logima');
     const { email, password } = req.body;
     const token = await loginService.login(email, password);
     // console.log(token);

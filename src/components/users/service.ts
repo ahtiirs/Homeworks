@@ -20,7 +20,7 @@ const usersService = {
         console.log(user);
       return user[0];
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       return false;
     }
 
@@ -30,7 +30,7 @@ const usersService = {
         const [user]: any | [IUser[], FieldPacket[]] = await pool.query('SELECT * FROM users WHERE email = ? AND dateDeleted IS NULL', [email]);
         return user[0];
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         return false;
       }
     
@@ -45,7 +45,7 @@ const usersService = {
       'UPDATE users SET dateDeleted = ? WHERE id = ? AND dateDeleted IS NULL;', [currentDate, id]);
        return true;
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       return false;
     }
 
@@ -61,7 +61,7 @@ const usersService = {
         const [result]:[ResultSetHeader, FieldPacket[]] = await pool.query('INSERT INTO users SET ?;',[user]);
         return result.insertId;
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       return false;
     }
   },
@@ -81,7 +81,7 @@ const usersService = {
       'UPDATE users SET ? WHERE id = ? AND dateDeleted IS NULL;', [edituser, id]);
        return true;
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       return false;
     }
 

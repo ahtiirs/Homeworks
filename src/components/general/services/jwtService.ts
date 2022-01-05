@@ -17,7 +17,7 @@ const jwtService = {
     try { 
       const payload = await jwt.verify(token, config.jwtSecret);
       
-      console.log('Payload:'+payload);
+      // console.log('Payload:'+payload);
       return payload ;
     } catch (error) {
       // console.log(error);

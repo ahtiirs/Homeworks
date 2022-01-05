@@ -41,8 +41,8 @@ deleteById: async (req: Request, res: Response) => {
 
   const data = await coursesService.deleteById(id);
 
-  if (!data)  {
-    return res.status(responseCodes.badRequest).json({ message: `Course not found with id: ${id}`,});
+  if (data == 0)  {
+    return res.status(responseCodes.badRequest).json({ error: `Course not found with id: ${id}`,});
   }
   
   return res.status(responseCodes.noContent).json({});
@@ -59,7 +59,7 @@ add: async (req: Request, res: Response) => {
 
   const result = await coursesService.add(Name);
   if (!result) {
-    return res.status(responseCodes.badRequest).json({error: 'Ei ünnestunud lisada',});
+    return res.status(responseCodes.badRequest).json({error: 'Operation error',});
   }
   return res.status(responseCodes.created).json({result,});
   },

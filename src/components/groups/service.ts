@@ -14,7 +14,7 @@ const groupsService = {
       await pool.query('SELECT id, name FROM HomeWork.groups ;');
       return groups;
     } catch (error) {
-    console.log(error);
+    // console.log(error);
     return false;
     }
   },  
@@ -25,23 +25,23 @@ const groupsService = {
       try {
         const [user,  fields]: [RowDataPacket[], FieldPacket[]] = await pool.query(
           'SELECT * FROM HomeWork.groups WHERE id = ? AND dateDeleted IS NULL;',id);
-          console.log(user);
+          // console.log(user);
         return user[0];
       } catch (error) {
-        console.log(error); 
+        // console.log(error); 
         return false;
       }
     },
 
-    deleteGroupById: async (id:number): Promise<boolean>=>{
+    deleteGroupById: async (id:number): Promise<number>=>{
       const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
       try {
-        const [user,  fields]: [RowDataPacket[], FieldPacket[]] = await pool.query(
+        const [user,  fields]: [any, FieldPacket[]] = await pool.query(
         'UPDATE HomeWork.groups SET dateDeleted = ? WHERE id = ? AND dateDeleted IS NULL;', [currentDate, id]);
-         return true;
+         return user.changedRows;
       } catch (error) {
-        console.log(error);
-        return false;
+        // console.log(error);
+        return 0;
       }
 
     },
@@ -51,7 +51,7 @@ const groupsService = {
       const [result]:[ResultSetHeader, FieldPacket[]] = await pool.query('INSERT INTO HomeWork.groups SET name=?;',[Name]);
       return result.insertId;
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         return false;
       }
     },
@@ -61,7 +61,7 @@ const groupsService = {
         'UPDATE HomeWork.groups SET name= ? WHERE id = ? AND dateDeleted IS NULL;', [Name, id]);
          return true;
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         return false;
       }
     },

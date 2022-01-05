@@ -5,12 +5,12 @@ import groupsService from './service';
 const groupsController = {
 
 getAll: async(req: Request, res: Response) => {
-          const groupsList = await groupsService.getAllgroups();  
+          const groups = await groupsService.getAllgroups();  
           return res.status(responseCodes.ok).json({
-          groupsList,
+          groups,
         });
       },
-    
+     
 getById: async(req: Request, res: Response) => {
   const id: number = parseInt(req.params.id, 10);
   if (!id) {
@@ -18,14 +18,14 @@ getById: async(req: Request, res: Response) => {
       error: 'No valid id provided',
     });
   }
-    const result = await groupsService.getGroupById(id);
+    const group = await groupsService.getGroupById(id);
   // const group = db.groups.find((element) => element.id === id);
-  if (!result) {
+  if (!group) {
     return res.status(responseCodes.badRequest).json({
       error: `No group found with id: ${id}`,
     });
   }
-  return res.status(responseCodes.ok).json({result,});
+  return res.status(responseCodes.ok).json({group,});
 
   },
     
@@ -39,9 +39,9 @@ deleteById: async (req: Request, res: Response) => {
 
   const Group = await groupsService.deleteGroupById(id);
 
-  if (!Group) { 
+  if (Group == 0) { 
     return res.status(responseCodes.badRequest).json({
-      message: `Group not found with id: ${id}`,
+      error: `Group not found with id: ${id}`,
     });
   }
   return res.status(responseCodes.noContent).json({});
@@ -52,7 +52,7 @@ add: async (req: Request, res: Response) => {
     const { Name } = req.body;
 
     if (!Name) {
-      return res.status(responseCodes.badRequest).json({error: 'Group name is required',});
+      return res.status(responseCodes.badRequest).json({error: 'group name is required',});
     }
 
     const id = await groupsService.addGroup(Name);

@@ -17,11 +17,11 @@ const app: Application = express();
 app.use(express.json());
 app.use(cors());
 
-app.use(cookieParser())
+// app.use(cookieParser())
 app.use('/ping', pingRouter);
 app.use('/login', loginRouter);
 app.use(isLoggedIn);
-app.use(myCookie); //Middleware for 
+// app.use(myCookie); //Middleware for 
 
 app.use('/groups', groupsRouter);
 app.use('/courses', coursesRouter);
