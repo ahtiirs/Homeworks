@@ -7,20 +7,20 @@ const homeworksController = {
 
   getAll: async (req: Request, res: Response) =>{
 
-        const data = await homeworksService.getAll();  
-        return res.status(responseCodes.ok).json({data,});
+        const homeworks = await homeworksService.getAll();  
+        return res.status(responseCodes.ok).json({homeworks,});
   },
   getById: async (req: Request, res: Response) => {
     const id: number = parseInt(req.params.id, 10);
       if (!id) {
         return res.status(responseCodes.badRequest).json({error: 'No valid id provided',});
       }
-      const data = await homeworksService.getById(id);
-      if (!data) {
+      const homework = await homeworksService.getById(id);
+      if (!homework) {
         return res.status(responseCodes.badRequest).json({error: `No homework found with id: ${id}`,});
       }
       
-      return res.status(responseCodes.ok).json({data,});
+      return res.status(responseCodes.ok).json({homework,});
   },
   
   deleteById: async (req: Request, res: Response) => {
@@ -38,7 +38,7 @@ const homeworksController = {
   },
 
   add: async (req: Request, res: Response) =>  {
-    const { user, group, teacher, description, dueDate } = req.body;
+    const { user, group, course, teacher, description, dueDate } = req.body;
 
     if (!group || !teacher || !description || !dueDate) {
       return res.status(responseCodes.badRequest).json({
@@ -49,22 +49,27 @@ const homeworksController = {
       return res.status(responseCodes.badRequest).json({
         error: 'group, teacher, description, dueDate is required',});
     }
+    const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
     const Homework: newHomework ={
       user_id: user,
       group_id: group,
+      course_id: course,
       teacher_id: teacher,
       description: description,
       dueDate: dueDate,
+      dateCreated:currentDate,
     }
+    console.log(Homework);
 
-    const data = await homeworksService.add(Homework);
+    const id = await homeworksService.add(Homework);
 
-    return res.status(responseCodes.created).json({data,});
+    return res.status(responseCodes.created).json({id,});
 
   },
   updateById: async (req: Request, res: Response) =>  {
     const id: number = parseInt(req.params.id, 10);
-    const {user, group, teacher, description, dueDate } = req.body;
+    const {user, group, course, teacher, description, dueDate  } = req.body;
     if (!id) {
       return res.status(responseCodes.badRequest).json({error: 'No valid id provided',});
     }
@@ -73,14 +78,14 @@ const homeworksController = {
         error: 'Something is required',
       });
     }
-  
+    const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
     const Homework: homework ={
       id: id,
       user_id: user,
       group_id: group,
       teacher_id: teacher,
       description: description,
-      dueDate: dueDate,
+      dateModified: dueDate,
     }
     const data = await homeworksService.updateById(Homework);
 

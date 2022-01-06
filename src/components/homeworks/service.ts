@@ -11,10 +11,10 @@ const coursesService = {
       try {
           const [homeworks,  fields]: [RowDataPacket[], FieldPacket[]] = 
           await pool.query('SELECT *  FROM homeworks WHERE 1;');
-          console.log(homeworks);
+          // console.log(homeworks);
           return homeworks;
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         return false;
       }
     },
@@ -23,10 +23,10 @@ const coursesService = {
       try {
         const [homeworks,  fields]: [RowDataPacket[], FieldPacket[]] = await pool.query(
           'SELECT *  FROM homeworks WHERE id = ? ;',id);
-          console.log(homeworks);
+          // console.log(homeworks);
           return homeworks[0];
         } catch (error) {
-          console.log(error);
+          // console.log(error);
           return false;
         }
      
@@ -39,7 +39,7 @@ const coursesService = {
         'UPDATE homeworks SET dateDeleted = ? WHERE id = ? AND dateDeleted IS NULL;', [currentDate, id]);
          return true;
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         return false;
       }
     },
@@ -59,7 +59,7 @@ const coursesService = {
     
       try {
         const [user,  fields]: [RowDataPacket[], FieldPacket[]] = await pool.query(
-        'UPDATE homeworks SET name= ? WHERE id = ? AND dateDeleted IS NULL;', [Homework, Homework.id]);
+        'UPDATE homeworks SET ? WHERE id = ? AND dateDeleted IS NULL;', [Homework, Homework.id]);
          return true;
       } catch (error) {
         console.log(error);

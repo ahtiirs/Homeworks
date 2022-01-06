@@ -10,7 +10,7 @@ import { Console } from 'console';
 const usersService = {
 
   getAllUsers: async(): Promise<RowDataPacket[]> => {
-    const [users,  fields]: [RowDataPacket[], FieldPacket[]] = await pool.query('SELECT *  FROM users WHERE dateDeleted IS NULL;');
+    const [users,  fields]: [RowDataPacket[], FieldPacket[]] = await pool.query('SELECT id, firstName, lastName, email, role FROM users WHERE dateDeleted IS NULL;');
     return users;
    },
   getUserById: async(id: number): Promise<RowDataPacket | boolean | IUser> => {
@@ -28,8 +28,10 @@ const usersService = {
   },
      getUserByEmail: async (email: string): Promise<IUser | false> => {
       try {
-        const [user]: any | [IUser[], FieldPacket[]] = await pool.query('SELECT * FROM users WHERE email = ? AND dateDeleted IS NULL', [email]);
+        const [user]: any | [IUser[], FieldPacket[]] = await pool.query('SELECT id, firstName, lastName, email, role, password FROM users WHERE email = ? AND dateDeleted IS NULL', [email]);
+        // console.log(user[0]);      
         return user[0];
+
       } catch (error) {
         // console.log(error);
         return false;
@@ -63,16 +65,16 @@ const usersService = {
         // console.log(hashedPassword);
         // console.log(user);
         const [allreadyUser]: any | [IUser[], FieldPacket[]] = await pool.query('SELECT id, email, firstname, lastname FROM users WHERE email = ? AND dateDeleted IS NOT NULL', [newUser.email]);
-        console.log(allreadyUser[0]);
+        // console.log(allreadyUser[0]);
         const newEmail:any = {
           email: (`${allreadyUser[0].email} ${currentDate}`)
         };
-        console.log(newEmail);
+        // console.log(newEmail);
         try {
            const [modifyUser, fields]: any | [IUser[], FieldPacket[]] = await pool.query('UPDATE users SET ? WHERE id = ? AND "dateDeleted" IS NOT NULL ;', [newEmail, allreadyUser[0].id]);
-        console.log(modifyUser,fields);
+        // console.log(modifyUser,fields);
         } catch (error) {
-          console.log(error);
+          // console.log(error);
         }
        
 
