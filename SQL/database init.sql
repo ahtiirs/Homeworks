@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `HomeWork`.`courses` (
   `dateDeleted` DATETIME NULL DEFAULT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 49
+AUTO_INCREMENT = 101
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `HomeWork`.`groups` (
   `dateDeleted` TIMESTAMP(1) NULL DEFAULT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 16
+AUTO_INCREMENT = 68
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `HomeWork`.`teachers` (
   `dateDeleted` TIMESTAMP(1) NULL DEFAULT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 6
+AUTO_INCREMENT = 17
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS `HomeWork`.`users` (
   PRIMARY KEY (`id`),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 7
+AUTO_INCREMENT = 54
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -86,32 +86,33 @@ COLLATE = utf8mb4_0900_ai_ci;
 CREATE TABLE IF NOT EXISTS `HomeWork`.`homeworks` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `description` VARCHAR(145) NULL DEFAULT NULL,
-  `dueDate` TIMESTAMP(1) NULL DEFAULT NULL,
-  `dateCreated` TIMESTAMP(1) NOT NULL,
-  `dateDeleted` TIMESTAMP(1) NULL DEFAULT NULL,
-  `users_id` INT NOT NULL,
-  `teachers_id` INT NOT NULL,
-  `courses_id` INT NOT NULL,
-  `groups_id` INT NOT NULL,
+  `dueDate` TIMESTAMP NULL DEFAULT NULL,
+  `dateCreated` TIMESTAMP NULL DEFAULT NULL,
+  `dateDeleted` TIMESTAMP NULL DEFAULT NULL,
+  `user_id` INT NOT NULL,
+  `teacher_id` INT NOT NULL,
+  `course_id` INT NOT NULL,
+  `group_id` INT NULL DEFAULT NULL,
+  `dateModified` TIMESTAMP NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_homeworks_users_idx` (`users_id` ASC) VISIBLE,
-  INDEX `fk_homeworks_teachers1_idx` (`teachers_id` ASC) VISIBLE,
-  INDEX `fk_homeworks_courses1_idx` (`courses_id` ASC) VISIBLE,
-  INDEX `fk_homeworks_groups1_idx` (`groups_id` ASC) VISIBLE,
+  INDEX `fk_homeworks_users_idx` (`user_id` ASC) VISIBLE,
+  INDEX `fk_homeworks_teachers1_idx` (`teacher_id` ASC) VISIBLE,
+  INDEX `fk_homeworks_courses1_idx` (`course_id` ASC) VISIBLE,
+  INDEX `fk_homeworks_groups1_idx` (`group_id` ASC) VISIBLE,
   CONSTRAINT `fk_homeworks_courses1`
-    FOREIGN KEY (`courses_id`)
+    FOREIGN KEY (`course_id`)
     REFERENCES `HomeWork`.`courses` (`id`),
   CONSTRAINT `fk_homeworks_groups1`
-    FOREIGN KEY (`groups_id`)
+    FOREIGN KEY (`group_id`)
     REFERENCES `HomeWork`.`groups` (`id`),
   CONSTRAINT `fk_homeworks_teachers1`
-    FOREIGN KEY (`teachers_id`)
+    FOREIGN KEY (`teacher_id`)
     REFERENCES `HomeWork`.`teachers` (`id`),
   CONSTRAINT `fk_homeworks_users`
-    FOREIGN KEY (`users_id`)
+    FOREIGN KEY (`user_id`)
     REFERENCES `HomeWork`.`users` (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 4
+AUTO_INCREMENT = 22
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
