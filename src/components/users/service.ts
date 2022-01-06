@@ -4,19 +4,20 @@ import db from '../../db';
 import { IUser, IUpdateUser, INewUser } from './interfaces';
 import hashService from '../general/services/hashService';
 import pool from '../../database';
+import { Console } from 'console';
 
 
 const usersService = {
 
   getAllUsers: async(): Promise<RowDataPacket[]> => {
-    const [users,  fields]: [RowDataPacket[], FieldPacket[]] = await pool.query('SELECT id, firstName, lastName, email, role, dateCreated, dateUpdated, dateDeleted  FROM users WHERE dateDeleted IS NULL;');
+    const [users,  fields]: [RowDataPacket[], FieldPacket[]] = await pool.query('SELECT *  FROM users WHERE dateDeleted IS NULL;');
     return users;
    },
   getUserById: async(id: number): Promise<RowDataPacket | boolean | IUser> => {
     // const user = db.users.find((element) => element.id === id);
     try {
       const [user,  fields]: [RowDataPacket[], FieldPacket[]] = await pool.query(
-        'SELECT firstName, lastName, email, role, dateCreated, dateUpdated  FROM users WHERE id = ? AND dateDeleted IS NULL;',id);
+        'SELECT *  FROM users WHERE id = ? AND dateDeleted IS NULL;',id);
         // console.log(user);
       return user[0];
     } catch (error) {
@@ -61,6 +62,20 @@ const usersService = {
           };
         // console.log(hashedPassword);
         // console.log(user);
+        const [allreadyUser]: any | [IUser[], FieldPacket[]] = await pool.query('SELECT id, email, firstname, lastname FROM users WHERE email = ? AND dateDeleted IS NOT NULL', [newUser.email]);
+        console.log(allreadyUser[0]);
+        const newEmail:any = {
+          email: (`${allreadyUser[0].email} ${currentDate}`)
+        };
+        console.log(newEmail);
+        try {
+           const [modifyUser, fields]: any | [IUser[], FieldPacket[]] = await pool.query('UPDATE users SET ? WHERE id = ? AND "dateDeleted" IS NOT NULL ;', [newEmail, allreadyUser[0].id]);
+        console.log(modifyUser,fields);
+        } catch (error) {
+          console.log(error);
+        }
+       
+
         const [result]:[ResultSetHeader, FieldPacket[]] = await pool.query('INSERT INTO users SET ?;',[user]);
         // console.log(result);
         return result.insertId;
