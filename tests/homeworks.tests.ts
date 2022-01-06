@@ -13,7 +13,7 @@ let newId: number;
 
 describe('Homeworks controller', () => {
     describe('GET /homeworks', () => {
-      it('responds with code 200 and token after login', async () => {
+      it('Test 1 - responds with code 200 and token after login', async () => {
         const response = await request(app)
           .post('/login')
           .send(user);
@@ -24,7 +24,7 @@ describe('Homeworks controller', () => {
         token = response.body.token;
       });
 
-      it('responds with code 401 and error message because of no token provided', async () => {
+      it('Test 2 - responds with code 401 and error message because of no token provided', async () => {
         const response = await request(app).get('/homeworks');
         expect(response.body).to.be.a('object');
         expect(response.statusCode).to.equal(401);
@@ -32,7 +32,7 @@ describe('Homeworks controller', () => {
         expect(response.body.error).to.equal('Token is not valid');
       });
 
-      it('responds with code 401 and error message because of invalid token', async () => {
+      it('Test 3 - responds with code 401 and error message because of invalid token', async () => {
         const response = await request(app)
         .get('/homeworks')
         .set('Authorization', 'Bearer iudflvdufvudsalfviusd iufdvsidufnds43454f45e');
@@ -42,7 +42,7 @@ describe('Homeworks controller', () => {
       expect(response.body.error).to.equal('Token is not valid');
       });
 
-      it('responds with code 200 and list of homeworks', async () => {
+      it('Test 4 - responds with code 200 and list of homeworks', async () => {
         const response = await request(app)
           .get('/homeworks')
           .set('Authorization', `Bearer ${token}`);
@@ -53,7 +53,7 @@ describe('Homeworks controller', () => {
         expect(response.body.homeworks.length).to.greaterThan(0);
     });
 
-      it('Test 6 - responds with code 201 and added homework ID ', async () => {
+      it('Test 5 - responds with code 201 and added homework ID ', async () => {
         const response = await request(app)
           .post('/homeworks')
           .set('Authorization', `Bearer ${token}`)
@@ -73,7 +73,7 @@ describe('Homeworks controller', () => {
         newId = response.body.id;
       });
 
-      it('Test 7 - responds with code 200 and homework', async () => {
+      it('Test 6 - responds with code 200 and homework', async () => {
         const response = await request(app)
           .get(`/homeworks/${newId}`)
           .set('Authorization', `Bearer ${token}`);
@@ -84,7 +84,7 @@ describe('Homeworks controller', () => {
         // expect(response.body.user.length).to.greaterThan(0);
       });
 
-      it('Test 8 - responds with code 204 and modified rows nr', async () => {
+      it('Test 7 - responds with code 204 and modified rows nr', async () => {
         const response = await request(app)
           .patch(`/homeworks/${newId}`)
           .set('Authorization', `Bearer ${token}`)
@@ -102,7 +102,7 @@ describe('Homeworks controller', () => {
         // expect(response.body.group.length).to.greaterThan(0);
       });
 
-      it('Test 11 - responds with code 204 and delete added test Homework ID ', async () => {
+      it('Test 8 - responds with code 204 and delete added test Homework ID ', async () => {
         const response = await request(app)
           .delete(`/homeworks/${newId}`)
           .set('Authorization', `Bearer ${token}`);

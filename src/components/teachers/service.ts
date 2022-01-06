@@ -14,7 +14,7 @@ const teachersService = {
         await pool.query('SELECT id, name FROM HomeWork.teachers ;');
         return teachers;
       } catch (error) {
-      console.log(error);
+      // console.log(error);
       return false;
       }
  
@@ -26,10 +26,10 @@ const teachersService = {
         const [teachers,  fields]: [RowDataPacket[], FieldPacket[]] = await pool.query(
           // 'SELECT * FROM HomeWork.teachers WHERE id = ? AND dateDeleted IS NULL;',id);
           'SELECT * FROM HomeWork.teachers WHERE id = ? ;',id);
-          console.log(teachers[0]);
+          // console.log(teachers[0]);
         return teachers[0];
       } catch (error) {
-        console.log(error); 
+        // console.log(error); 
         return false;
       }
 
@@ -43,7 +43,7 @@ const teachersService = {
         'UPDATE teachers SET dateDeleted = ? WHERE id = ? AND dateDeleted IS NULL;', [currentDate, id]);
          return true;
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         return false;
       }
 
@@ -54,7 +54,7 @@ const teachersService = {
       const [result]:[ResultSetHeader, FieldPacket[]] = await pool.query('INSERT INTO teachers SET name=?;',[Name]);
       return result.insertId;
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         return false;
       }
 
@@ -66,7 +66,7 @@ const teachersService = {
         'UPDATE teachers SET name= ? WHERE id = ? AND dateDeleted IS NULL;', [Name, id]);
          return true;
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         return false;
       }
   },

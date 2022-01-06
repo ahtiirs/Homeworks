@@ -64,7 +64,7 @@ const coursesService = {
         'UPDATE courses SET name= ? WHERE id = ? AND dateDeleted IS NULL;', [Name, id]);
          return true;
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         return false;
       }
     },

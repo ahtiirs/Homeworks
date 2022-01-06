@@ -5,8 +5,8 @@ import teachersService from './service';
 const teachersController = {
 
   getAll: async(req: Request, res: Response) =>  {
-        const data = await teachersService.getAll();  
-        return res.status(responseCodes.ok).json({data, });
+        const teachers = await teachersService.getAll();  
+        return res.status(responseCodes.ok).json({teachers, });
   },
 
 

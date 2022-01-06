@@ -60,7 +60,7 @@ const homeworksController = {
       dueDate: dueDate,
       dateCreated:currentDate,
     }
-    console.log(Homework);
+    // console.log(Homework);
 
     const id = await homeworksService.add(Homework);
 

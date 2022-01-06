@@ -50,7 +50,7 @@ const coursesService = {
         const [result]:[ResultSetHeader, FieldPacket[]] = await pool.query('INSERT INTO homeworks SET ?;',[Homework]);
         return result.insertId;
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         return false;
       }
 
@@ -62,7 +62,7 @@ const coursesService = {
         'UPDATE homeworks SET ? WHERE id = ? AND dateDeleted IS NULL;', [Homework, Homework.id]);
          return true;
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         return false;
       }
 
