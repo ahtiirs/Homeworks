@@ -11,8 +11,8 @@ const user = {
 let token: string;
 let newId: number;
 
-describe('Ping controller', () => {
-    describe('GET /users', () => {
+describe('Homeworks controller', () => {
+    describe('GET /homeworks', () => {
       it('Test 1 - responds with code 200 and token after login', async () => {
         const response = await request(app)
           .post('/login')
@@ -25,7 +25,7 @@ describe('Ping controller', () => {
       });
 
       it('Test 2 - responds with code 401 and error message because of no token provided', async () => {
-        const response = await request(app).get('/users');
+        const response = await request(app).get('/homeworks');
         expect(response.body).to.be.a('object');
         expect(response.statusCode).to.equal(401);
         expect(response.body).to.have.key('error');
@@ -34,7 +34,7 @@ describe('Ping controller', () => {
 
       it('Test 3 - responds with code 401 and error message because of invalid token', async () => {
         const response = await request(app)
-        .get('/users')
+        .get('/homeworks')
         .set('Authorization', 'Bearer iudflvdufvudsalfviusd iufdvsidufnds43454f45e');
       expect(response.body).to.be.a('object');
       expect(response.statusCode).to.equal(401);
@@ -42,26 +42,29 @@ describe('Ping controller', () => {
       expect(response.body.error).to.equal('Token is not valid');
       });
 
-      it('Test 4 - responds with code 200 and list of users', async () => {
+      it('Test 4 - responds with code 200 and list of homeworks', async () => {
         const response = await request(app)
-          .get('/users')
+          .get('/homeworks')
           .set('Authorization', `Bearer ${token}`);
         expect(response.body).to.be.a('object');
         expect(response.statusCode).to.equal(200);
-        expect(response.body).to.have.key('users');
-        expect(response.body.users).to.be.a('array');
-        expect(response.body.users.length).to.greaterThan(0);
+        expect(response.body).to.have.key('homeworks');
+        expect(response.body.homeworks).to.be.a('array');
+        expect(response.body.homeworks.length).to.greaterThan(0);
     });
 
-      it('Test 5 - responds with code 201 and added user ID ', async () => {
+      it('Test 5 - responds with code 201 and added homework ID ', async () => {
         const response = await request(app)
-          .post('/users')
+          .post('/homeworks')
           .set('Authorization', `Bearer ${token}`)
           .send({
-            firstName: 'Test_firstName',
-            lastName: 'Test_LastName',
-            email: 'Test_email',
-            password: 'Test_pass',           
+            description: 'Test_desc',
+            dueDate: '2022-01-05 23:25:17.0',
+            user: 1,
+            teacher: 1,   
+            course: 1, 
+            group: 1,
+
           });
         expect(response.body).to.be.a('object');
         expect(response.statusCode).to.equal(201);
@@ -70,24 +73,28 @@ describe('Ping controller', () => {
         newId = response.body.id;
       });
 
-      it('Test 6 - responds with code 200 and added group', async () => {
+      it('Test 6 - responds with code 200 and homework', async () => {
         const response = await request(app)
-          .get(`/users/${newId}`)
+          .get(`/homeworks/${newId}`)
           .set('Authorization', `Bearer ${token}`);
         expect(response.body).to.be.a('object');
         expect(response.statusCode).to.equal(200);
-        expect(response.body).to.have.key('user');
-        expect(response.body.user).to.be.a('object');
+        expect(response.body).to.have.key('homework');
+        expect(response.body.homework).to.be.a('object');
         // expect(response.body.user.length).to.greaterThan(0);
       });
 
-      it('Test 7 - responds with code 204 and added group', async () => {
+      it('Test 7 - responds with code 204 and modified rows nr', async () => {
         const response = await request(app)
-          .patch(`/users/${newId}`)
+          .patch(`/homeworks/${newId}`)
           .set('Authorization', `Bearer ${token}`)
           .send({
-            firstName: 'Test_group_changed',
-            lastName: 'Test_group_changed',
+            description: 'Test_modi_desc',
+            dueDate: '2023-01-05 23:25:17.0',
+            user: 1,
+            teacher: 1,   
+            course: 1, 
+            group: 1,
           });
         expect(response.body).to.be.a('object');
         expect(response.statusCode).to.equal(204);
@@ -95,9 +102,9 @@ describe('Ping controller', () => {
         // expect(response.body.group.length).to.greaterThan(0);
       });
 
-      it('Test 8 - responds with code 204 and delete added test ID ', async () => {
+      it('Test 8 - responds with code 204 and delete added test Homework ID ', async () => {
         const response = await request(app)
-          .delete(`/users/${newId}`)
+          .delete(`/homeworks/${newId}`)
           .set('Authorization', `Bearer ${token}`);
         expect(response.statusCode).to.equal(204);
         expect(response.body).to.be.a('object');
